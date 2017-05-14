@@ -1,3 +1,25 @@
 1. What did I do / did not do since last Scrum.
 2. What will I do until next Scrum.
 3. Where do I need help / what do I need to research.
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+*** April 12 Nedis ***
+DID SINCE LAST SCRUM:
+
+WILL DO IN THE NEXT 24 HOURS
+	1. Do the project proposal
+	2. Define the database structure
+	3. SetUP Trello
+WHERE I NEED HELP IS...
+	1. Check connection table between photos and albuns
+
+*** April 12 Lorena ***
+DID BEFORE CREATING THE SCRUM:
+
+WILL DO IN THE NEXT 24 HOURS
+	1. Create Mockups of pages myPhotos and myAlbuns using bootstrap
+WHERE I NEED HELP IS...
+	1. Find tutorial about implement Bootstrap
+-----------------------------------------------------------------------------------------------------------------------------
