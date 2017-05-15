@@ -5,7 +5,7 @@
 
 
 -----------------------------------------------------------------------------------------------------------------------------
-*** April 12 Nedis ***
+*** May 12 Nedis ***
 DID SINCE LAST SCRUM:
 
 WILL DO IN THE NEXT 24 HOURS
@@ -15,11 +15,33 @@ WILL DO IN THE NEXT 24 HOURS
 WHERE I NEED HELP IS...
 	1. Check connection table between photos and albuns
 
-*** April 12 Lorena ***
+*** May 12 Lorena ***
 DID BEFORE CREATING THE SCRUM:
 
 WILL DO IN THE NEXT 24 HOURS
 	1. Create Mockups of pages myPhotos and myAlbuns using bootstrap
 WHERE I NEED HELP IS...
 	1. Find tutorial about implement Bootstrap
+-----------------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------------------------
+*** May 15 Nedis ***
+DID SINCE LAST SCRUM:
+	1. Do the project proposal
+	2. Define the database structure
+	3. SetUP Trello
+WILL DO IN THE NEXT 24 HOURS
+	1. Start to create de index file - (register, login, logout, etc...)
+WHERE I NEED HELP IS...
+	
+
+*** May 15 Lorena ***
+WHAT DID I DO / DID NOT DO SINCE LAST SCRUM:
+	1. Implemented first layout
+	2. Revised the Proposal
+	3. Created and started to implement master.html.twig
+WILL DO IN THE NEXT 24 HOURS
+	1. Integrate master layout with PHP
+WHERE I NEED HELP IS...
+	1. Integrations between PHP and HTML
 -----------------------------------------------------------------------------------------------------------------------------
