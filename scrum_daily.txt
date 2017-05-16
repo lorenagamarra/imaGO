@@ -45,3 +45,26 @@ WILL DO IN THE NEXT 24 HOURS
 WHERE I NEED HELP IS...
 	1. Integrations between PHP and HTML
 -----------------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------------------------
+*** May 16 Nedis ***
+DID SINCE LAST SCRUM:
+	1. Database table photos updated (imageData, imageMimeType)
+
+	2. imagoindex.php (/home, /signup, /signin, /signout, /photos and /photos/add)
+WILL DO IN THE NEXT 24 HOURS
+	1. Define functionalities (pages, urls, buttons, etc)
+	2. Test index (PHP and HTML)
+WHERE I NEED HELP IS...
+	1. Implement Facebook/google sign in
+
+*** May 16 Lorena ***
+WHAT DID I DO / DID NOT DO SINCE LAST SCRUM:
+	1. Started create html.twig files
+	2. Started defining layout (html, css, javascrip)
+WILL DO IN THE NEXT 24 HOURS
+	1. Improve layout
+	2. Define functionalities (pages, urls, buttons, etc)
+WHERE I NEED HELP IS...
+	1. Integrations between PHP and HTML
+-----------------------------------------------------------------------------------------------------------------------------
