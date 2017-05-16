@@ -1,0 +1,59 @@
+<html><head>
+        <title>imaGO - Home</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="/web/imaGOCSS.css" rel="stylesheet" type="text/css">
+    </head><body>
+        
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/"><span>imaGO</span></a>
+                </div>
+                {% block navbarSign %}
+                {% endblock navbarSign %}
+            </div>
+        </div>
+        <div id="container" class="cover">
+            {% block container %}
+            {% endblock container %}
+        </div>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="text-center">Copyright imaGO©</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-md-12 hidden-lg hidden-md hidden-sm text-center">
+                                <a href="#"><i class="fa fa-fw fa-instagram fa-lg text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-fw fa-lg fa-twitter text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-facebook fa-fw fa-lg text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-fw fa-github fa-lg text-inverse"></i></a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 hidden-xs text-right">
+                                <a href="#"><i class="fa fa-fw fa-instagram fa-lg text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-fw fa-lg fa-twitter text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-facebook fa-fw fa-lg text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-fw fa-github fa-lg text-inverse"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+
+    </body></html>

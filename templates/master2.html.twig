@@ -1,14 +1,13 @@
-{# empty Twig template #}
 <html><head>
+        <title>imaGO - My Photos</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-        <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">
-        <link href="imaGOCSS.css" rel="stylesheet" type="text/css">
+        <link href="/web/imaGOCSS.css" rel="stylesheet" type="text/css">
     </head><body>
-        <div class="navbar navbar-default navbar-static-top">
+        <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
@@ -34,30 +33,16 @@
                 </div>
             </div>
         </div>
-        <div class="section">
+
+        <div id="main" class="section text-left">
+
             <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h1 class="text-center">Team</h1>
-                        <p class="text-center">We are a group of skilled individuals.</p>
-                    </div>
-                </div>
-                <div class="row text-center">
-                    <div class="col-md-4 text-center">
-                        <img src="http://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png" class="center-block img-circle img-responsive">
-                        <h3 class="text-center">Nedis Barreto</h3>
-                        <p class="text-center">Developer</p>
-                    </div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4">
-                        <img src="http://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png" class="center-block img-circle img-responsive">
-                        <h3 class="text-center">Lorena Gamarra</h3>
-                        <p class="text-center">Developer</p>
-                    </div>
-                </div>
+                {% block content %}
+
+                {% endblock %}
             </div>
         </div>
-        <footer class="section section-primary">
+        <footer>
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
@@ -74,15 +59,62 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 hidden-xs text-right">
-                                <a href="#"><i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
-                                <a href="#"><i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
-                                <a href="#"><i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
-                                <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-2x fa-fw fa-instagram text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-2x fa-fw fa-twitter text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-2x fa-facebook fa-fw text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-2x fa-fw fa-github text-inverse"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </footer>
+
+
+
+        <script>
+            function openNav() {
+                document.getElementById("mySidenav").style.width = "100px";
+                document.getElementById("main").style.marginLeft = "100px";
+            }
+
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+                document.getElementById("main").style.marginLeft = "0";
+            }
+
+
+
+
+            // Get the modal
+            var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+            var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal 
+            btn.onclick = function () {
+                modal.style.display = "block";
+            }
+
+// When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+// When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        </script>
+
+
+
+
     </body>
 </html>
