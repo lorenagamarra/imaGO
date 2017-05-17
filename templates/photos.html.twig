@@ -1,9 +1,9 @@
-{% extends "master2.html.twig" %}
+{% extends "master.html.twig" %}
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
             <li class="active">
-                <p>Hi </p><a href="#">USER</a>
+                <a href="/profile"><b>{{ imagouser.name }} | Profile</b></a>
             </li>
             <li>
                 <a href="/addphoto">Add Photo</a>
@@ -12,18 +12,15 @@
                 <a href="/deletephoto">Delete Photo</a>
             </li>
             <li>
-                <a href="/profile">Profile</a>
-            </li>
-            <li>
                 <a href="/signout">Sign Out</a>
             </li>
         </ul>
     </div>
 {% endblock navbarSign %}
 {% block content %}
-    
+
     <div class="row">
-        
+
         <div class="col-md-12">
             <div class="section">
                 <div class="container">
@@ -32,34 +29,23 @@
                             <h1 class="text-center">My Photos</h1>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
+                    {% for p in photoList %}
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a href="#"><img src="/{{p.imagePath}}" width="40" class="img-responsive"></a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="#"><img src="/{{p.imagePath}}" width="40" class="img-responsive"></a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="#"><img src="/{{p.imagePath}}" width="40" class="img-responsive"></a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="#"><img src="/{{p.imagePath}}" width="40" class="img-responsive"></a>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
-                    </div>
+
+                    {% endfor %}    
                 </div>
             </div>
         </div>

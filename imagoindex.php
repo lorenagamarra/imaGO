@@ -130,6 +130,10 @@ $app->get('/ajax/emailused/:email', function($email) {
 
 
 
+
+
+
+
 //**********************************
 //********* SIGN IN (login) ********
 $app->get('/signin', function() use ($app) {
@@ -138,10 +142,12 @@ $app->get('/signin', function() use ($app) {
         return;
     }
     $app->render('photos.html.twig');
+    
+    
 });
 
 $app->post('/signin', function() use ($app) {
-    //print_r($_POST);    
+    print_r($_POST);    
     $email = $app->request()->post('email');
     $pass = $app->request()->post('pass1');
     // verification    
