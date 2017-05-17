@@ -1,4 +1,23 @@
 {% extends "master2.html.twig" %}
+{% block navbarSign %}
+    <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="active">
+                <p>Hi </p><a href="#">USER</a>
+            </li>
+            <li>
+                <a href="/addalbum">Add Album</a>
+            </li>
+           
+            <li>
+                <a href="/profile">Profile</a>
+            </li>
+            <li>
+                <a href="/signout">Sign Out</a>
+            </li>
+        </ul>
+    </div>
+{% endblock navbarSign %}
 {% block content %}
     <div class="row">
         <div class="col-md-12">
