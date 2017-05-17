@@ -5,11 +5,18 @@ session_start();
 
 require_once 'vendor/autoload.php';
 
+/*
 DB::$user = 'imago';
 DB::$dbName = 'imago';
 DB::$password = 'viXftFK4GpTbhQvu';
 DB::$port = 3306;
 DB::$encoding = 'utf8';
+*/
+
+DB::$user = 'cp4776_imago';
+DB::$dbName = 'cp4776_imago';
+DB::$password = 'viXftFK4GpTbhQvu';
+
 
 // Slim creation and setup
 $app = new \Slim\Slim(array(
@@ -106,9 +113,12 @@ $app->post('/signup', function() use ($app) {
             'email' => $email,
             'password' => $pass1
         ));
-        $app->render('signup_success.html.twig');         //change to FLASH message after  **********************************
         
-        //after successful sign up, sign in automatically and show /photos  **********************************
+        //AFTER SIGN UP, DO LOGIN AUTOMATICALLY AND GO TO photos.html
+        $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
+        unset($user['password']);
+        $_SESSION['imagouser'] = $user;
+        $app->render('photos.html.twig');
     }
 });
 
@@ -133,7 +143,7 @@ $app->get('/signin', function() use ($app) {
 $app->post('/signin', function() use ($app) {
     //print_r($_POST);    
     $email = $app->request()->post('email');
-    $pass = $app->request()->post('pass');
+    $pass = $app->request()->post('pass1');
     // verification    
     $error = false;
     $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
@@ -146,13 +156,11 @@ $app->post('/signin', function() use ($app) {
     }
     // decide what to render
     if ($error) {
-        $app->render('login.html.twig', array("error" => true));
+        $app->render('signin.html.twig', array("error" => true));
     } else {
         unset($user['password']);
         $_SESSION['imagouser'] = $user;
-        $app->render('signin_success.html.twig');       //change to FLASH message after  **********************************
-        
-        //after successful sign in, show /photos  **********************************
+        $app->render('photos.html.twig');
     }
 });
 
@@ -164,12 +172,8 @@ $app->get('/signout', function() use ($app) {
         $app->render('home.html.twig');
         return;
     }
-    $app->render('signout.html.twig');                  
-});
-
-$app->post('/signout', function() use ($app) {
     unset($_SESSION['imagouser']);
-    $app->render('signout_success.html.twig');         //change to FLASH message after  **********************************
+    $app->render('home.html.twig');                  
 });
 
 
