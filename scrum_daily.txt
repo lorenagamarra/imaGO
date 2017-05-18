@@ -50,7 +50,6 @@ WHERE I NEED HELP IS...
 *** May 16 Nedis ***
 DID SINCE LAST SCRUM:
 	1. Database table photos updated (imageData, imageMimeType)
-
 	2. imagoindex.php (/home, /signup, /signin, /signout, /photos and /photos/add)
 WILL DO IN THE NEXT 24 HOURS
 	1. Define functionalities (pages, urls, buttons, etc)
@@ -66,5 +65,51 @@ WILL DO IN THE NEXT 24 HOURS
 	1. Improve layout
 	2. Define functionalities (pages, urls, buttons, etc)
 WHERE I NEED HELP IS...
+        1. Integrations between PHP and HTML
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+*** May 17 Nedis ***
+DID SINCE LAST SCRUM:
+        1. imagoindex.php (/home, /signup, /signin, /signout, /photos and /photos/add)
+WILL DO IN THE NEXT 24 HOURS
+        1. Define functionalities (pages, urls, buttons, etc)
+	2. Test index (PHP and HTML)
+WHERE I NEED HELP IS...
+        1. Implement Facebook/google sign in
+
+*** May 17 Lorena ***
+WHAT DID I DO / DID NOT DO SINCE LAST SCRUM:
+        1. Improve layout
+        2. Define functionalities (pages, urls, buttons, etc)
+WILL DO IN THE NEXT 24 HOURS
+        1. Implemented Add Photos
+        2. Work on Photos list
+WHERE I NEED HELP IS...
 	1. Integrations between PHP and HTML
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+*** May 18 Nedis ***
+DID SINCE LAST SCRUM:
+        1. Sign Up, Sign In, Sign Out, Username into /photos and others pages
+        2. Confirmation pages
+WILL DO IN THE NEXT 24 HOURS
+        1. Edit profile, Delete profile
+        2. Sing in with Facebook account
+        3. Email with forbidden password
+WHERE I NEED HELP IS...
+        1. Implement Facebook/google sign in
+        2. Analyse teacher's code to recover password
+
+*** May 18 Lorena ***
+WHAT DID I DO / DID NOT DO SINCE LAST SCRUM:
+        1. Improved layout
+        2. Defined functionalities (pages, urls, buttons, etc)
+        3. Implemented Add Photos
+        4. Worked on Photos list
+WILL DO IN THE NEXT 24 HOURS
+	1. Still work on Photos (show all fotos)
+        2. Work on delete photos
+        3. Start create album and etc
+WHERE I NEED HELP IS...
+	1. Photos list, photos selection
 -----------------------------------------------------------------------------------------------------------------------------
