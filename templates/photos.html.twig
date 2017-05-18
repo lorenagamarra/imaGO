@@ -5,6 +5,9 @@
             <li class="active">
                 <a href="/profile"><b>{{ imagouser.name }} | Profile</b></a>
             </li>
+            <li>
+                <a href="/albums">Albums</a>
+            </li>
             <!--
             <li>
                 <input id="upload" type="file" name="image" style="display: none;" multiple>
@@ -13,7 +16,7 @@
             <li>
                 <a href="/photos" onclick="window.open('photos/add', 'Pagina',
                                 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=1024, HEIGHT=700');">
-                                Add Photo 
+                    Add Photo 
                 </a>
                 <!--
                 <a href="" id="upload_link">Add photo</a>​
@@ -30,16 +33,16 @@
             </li>
         </ul>
     </div>
-<!--
-    <script>
-        $(function () {
-            $("#upload_link").on('click', function (e) {
-                e.preventDefault();
-                $("#upload:hidden").trigger('click');
+    <!--
+        <script>
+            $(function () {
+                $("#upload_link").on('click', function (e) {
+                    e.preventDefault();
+                    $("#upload:hidden").trigger('click');
+                });
             });
-        });
-    </script>
--->
+        </script>
+    -->
 {% endblock navbarSign %}
 {% block container %}
     <div class="row">
@@ -53,10 +56,23 @@
                     </div>
                     <div class="row">
                         {% for p in photoList %}
-                        <div class="col-md-3">
-                            <a href="/photos"><img src="/{{p.imagePath}}" class="img-responsive"></a>
-                        </div>
-                            {% endfor %}
+                            
+                            <div class="col-md-3">
+                                <a href="/photos">
+                                    
+                                </a>
+                                <img src="/{{p.imagePath}}" width="40" class="img-responsive">
+                            </div>
+                            <!--
+                            <div data-role="popup" id="myPopup">
+                                <p>This is my picture!</p> 
+                                <a href="#pageone" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+                                <img src="/{p.imagePath}}" style="width:800px;height:400px;" alt="Skaret View">
+                            </div>
+                            -->
+
+                            
+                        {% endfor %}
                     </div>
                 </div>
             </div>

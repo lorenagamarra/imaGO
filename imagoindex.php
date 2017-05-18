@@ -5,6 +5,18 @@ session_start();
 
 require_once 'vendor/autoload.php';
 
+//************************************
+//       TEACHER SPECIAL CODE
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+// create a log channel
+$log = new Logger('main');
+$log->pushHandler(new StreamHandler('logs/everything.log', Logger::DEBUG));
+$log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
+//       TEACHER SPECIAL CODE
+//************************************
+
 /*
 DB::$user = 'imago';
 DB::$dbName = 'imago';
@@ -16,6 +28,32 @@ DB::$encoding = 'utf8';
 DB::$user = 'cp4776_imago';
 DB::$dbName = 'cp4776_imago';
 DB::$password = 'viXftFK4GpTbhQvu';
+
+//************************************
+//       TEACHER SPECIAL CODE
+DB::$error_handler = 'sql_error_handler';
+DB::$nonsql_error_handler = 'nonsql_error_handler';
+function nonsql_error_handler($params) {
+    global $app, $log;
+    $log->error("Database error: " . $params['error']);
+    http_response_code(500);
+    $app->render('error_internal.html.twig');
+    die;
+}
+function sql_error_handler($params) {
+    global $app, $log;
+    $log->error("SQL error: " . $params['error']);
+    $log->error(" in query: " . $params['query']);
+    http_response_code(500);
+    $app->render('error_internal.html.twig');
+    die; // don't want to keep going if a query broke
+}
+//       TEACHER SPECIAL CODE
+//************************************
+
+
+
+
 
 
 // Slim creation and setup
@@ -175,29 +213,9 @@ $app->get('/signout', function() use ($app) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //**********************************
 //************* PHOTOS *************
+/*
 $app->get('/photos', function() use ($app) {
     if (!$_SESSION['imagouser']) {
         $app->render('forbidden.html.twig');
@@ -209,6 +227,7 @@ $app->get('/photos', function() use ($app) {
         'photoList' => $photoList
     ));
 });
+*/
 
 $app->get('/photos', function() use ($app) {
     if (!$_SESSION['imagouser']) {
@@ -216,13 +235,28 @@ $app->get('/photos', function() use ($app) {
         return;
     }
     $userId = $_SESSION['imagouser']['id'];
-    
+    /*
     $photoList = DB::query("SELECT imageData, imageMimeType FROM photos WHERE userID=%i ORDER BY id DESC", $userId);
     foreach ($photoList as $row) {
         echo $row['imageData'] . $row['imageMimeType'];
         //echo '<img src="data:image/jpeg;base64,'.base64_encode( $result['image'] ).'"/>';
         //https://meekro.com/docs.php
     }
+     */
+    
+    $photoList = DB::queryFirstRow("SELECT imageData,imageMimeType FROM photos "
+            . " WHERE userID=%i", $userId);
+    print_r($photoList);
+    if (!$photoList) {
+        $app->response()->status(404);
+        echo "404 - not found";
+    } else {
+       
+        $app->response->headers->set('Content-Type', $photoList['imageMimeType']);
+        echo $photoList['imageData'];
+    }
+    
+    
 });
 
 
@@ -277,7 +311,8 @@ $app->post('/photos/add', function() use ($app) {
     }
 });
 
-
+//***********************************
+//*********** PHOTOS LIST ***********
 
 
 
