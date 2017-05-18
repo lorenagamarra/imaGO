@@ -1,0 +1,96 @@
+{% extends "master.html.twig" %}
+
+{% block title %}imaGO - Profile Delete{% endblock %}
+
+{% block navbarSign %}
+    <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="active">
+                <a href="/profile"><b>{{ imagouser.name }} | Profile</b></a>
+            </li>
+            <li>
+                <input id="upload" type="file" name="image" style="display: none;" multiple>
+            </li>
+            <li>
+                <a href="" id="upload_link">Add photo</a>​
+                {% if v.imagePath %}
+                    <img width="50" src="/{{v.imagePath}}">
+                {% endif %}
+            </li>
+            <li>
+                <a href="/deletephoto">Delete Photo</a>
+            </li>
+            <li>
+                <a href="/signout">Sign Out</a>
+            </li>
+        </ul>
+    </div>
+{% endblock navbarSign %}
+
+
+
+{% block container %}
+    <div class="container">
+        <div class="center-form panel">
+            <div class="panel-body">
+
+                
+                
+                
+                <p> Are you sure you want to delete your profile? All albuns and photos will be deleted</p>
+                <form style="display: inline-block" action="/profile">
+                    <input type="submit" value="Cancel"></form>
+                <form style="display: inline-block" method="post">
+                    <input type="hidden" name="delete" value="confirmed">
+                    <input type="submit" value="Yes, delete"></form>
+                <p>{{u.name}} : {{u.month}}/{{b.day}}</p>
+                
+                
+                
+                
+                
+                
+                {% if error %}
+                    <p class="errorList">Login failed try again.</p>
+                {% endif %}
+
+                <button class="btn btn-block btn-facebook">
+                    <i class="ion-social-facebook"></i>Sign in with Facebook
+                </button>
+
+                <div class="signup-or-separator">
+                    <hr>
+                </div>
+
+                <h4 class="text-center"><i class="ion-log-in"></i>Sign in</h4>
+
+                <form name="loginForm" method="post">
+                    <div class="form-group has-feedback"">
+                        <input class="form-control input-lg" type="text" name="email" placeholder="Email" autofocus>
+                        <span class="ion-at form-control-feedback"></span>
+                        <div class="help-block" >
+
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <input class="form-control input-lg" type="password" name="pass1" placeholder="Password" autofocus>
+                        <span class="ion-key form-control-feedback"></span>
+                        <div class="help-block">
+
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-block btn-success">Sign in</button>
+
+                    <br/>
+
+                    <p class="text-center text-muted">
+                        <small>Don't have an account yet? <a href="/signup">Sign up</a></small>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock container %}
+

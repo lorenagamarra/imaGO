@@ -1,59 +1,101 @@
 {% extends "master.html.twig" %}
+
+{% block title %}imaGO - Profile{% endblock %}
+
+{% block headExtra %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+            $(document).ready(function () {
+                    $("#emailInUse").hide();
+                    $("input[name=email]").keyup(function () {
+                            var email = $(this).val();
+                            //console.log("Keyup: " + email);
+                            if (email === "") {
+                                    $("#emailInUse").hide();
+                                    return;
+                            }
+                            $.get("/ajax/emailused/" + email, function (result) {
+                                    result = eval(result);
+                                    if (result) {
+                                            $("#emailInUse").show();
+                                            return;
+                                    } else {
+                                            $("#emailInUse").hide();
+                                    }
+                            });
+                    });
+            });
+    </script>
+{% endblock %}
+
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
-            <li class="active">
-                <a href="/signin">Sign In</a>
+<li class="active">
+                <a href="/profile"><b>{{ imagouser.name }} | Profile</b></a>
             </li>
             <li>
-                <a href="/signup">Sign Up</a>
+                <input id="upload" type="file" name="image" style="display: none;" multiple>
+            </li>
+            <li>
+                <a href="" id="upload_link">Add photo</a>​
+                {% if v.imagePath %}
+                    <img width="50" src="/{{v.imagePath}}">
+                {% endif %}
+            </li>
+            <li>
+                <a href="/deletephoto">Delete Photo</a>
+            </li>
+            <li>
+                <a href="/signout">Sign Out</a>
             </li>
         </ul>
     </div>
 {% endblock navbarSign %}
+
 {% block container %}
-<div class="container">
-    <div class="center-form panel">
-      <div class="panel-body">
-        <h4 class="text-center"><i class="ion-log-in"></i> Log in</h4>
+    <div class="container">
+        <div class="center-form panel">
+            <div class="panel-body">
+                <h4 class="text-center"><i class="ion-person-add"></i>Profile</h4>
 
-        <form name="loginForm" ng-submit="emailLogin()" novalidate>
-          <div class="form-group has-feedback" ng-class="{ 'has-error': loginForm.email.$invalid && loginForm.email.$dirty }">
-            <input server-error class="form-control input-lg" type="text" name="email" ng-model="email" placeholder="Email" required autofocus>
-            <span class="ion-at form-control-feedback"></span>
-            <div class="help-block" ng-if="loginForm.email.$dirty" ng-messages="loginForm.email.$error">
-              <div ng-message="required">Please enter your email</div>
-              <div ng-message="server">{{errorMessage.email}}</div>
+                {% if errorList %}
+                    <ul class="errorList">
+                        {% for error in errorList %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <form method="post" name="profileForm">
+                    <div class="form-group has-feedback">
+                        <input class="form-control input-lg" type="text" id="name" name="name" placeholder="Name" autofocus value="{{v.name}}">
+                        <span class="ion-at form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback" >
+                        <input class="form-control input-lg" type="email" id="email" name="email" placeholder="Email" autofocus value="{{v.email}}">
+                        <span id="emailInUse">Email already registred</span>
+                        <span class="ion-at form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input class="form-control input-lg" type="password" name="pass1" placeholder="Password" autofocus value="{{v.password}}>
+                        <span class="ion-key form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input class="form-control input-lg" type="password" name="pass2" placeholder="Password (repeated)" autofocus>
+                        <span class="ion-key form-control-feedback"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-block btn-primary">Update</button>
+                    <br/>
+                </form>
+
+                <div class="signup-or-separator">
+                    <hr>
+                </div>
+
+                <a href="/profile/delete">Delete profile</a>
             </div>
-          </div>
-
-          <div class="form-group has-feedback" ng-class="{ 'has-error': loginForm.password.$invalid && loginForm.password.$dirty }">
-            <input server-error class="form-control input-lg" type="password" name="pass1" ng-model="password" placeholder="Password" required>
-            <span class="ion-key form-control-feedback"></span>
-            <div class="help-block" ng-if="loginForm.password.$dirty" ng-messages="loginForm.password.$error">
-              <div ng-message="required">Please enter your password</div>
-              <div ng-message="server">{{errorMessage.password}}</div>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-block btn-success" ng-disabled="loginForm.$invalid">Log in</button>
-
-          <br/>
-
-          <p class="text-center text-muted">
-            <small>Don't have an account yet? <a href="#/signup">Sign up</a></small>
-          </p>
-
-          <div class="signup-or-separator">
-            <h6 class="text">or</h6>
-            <hr>
-          </div>
-        </form>
-        <button class="btn btn-block btn-instagram" ng-click="instagramLogin()">
-          <i class="ion-social-instagram"></i> Sign in with Instagram
-        </button>
-      </div>
+        </div>
     </div>
-
-</div>
 {% endblock container %}

@@ -1,0 +1,18 @@
+{% extends "master.html.twig" %}
+
+{% block title %}imaGO - Access forbidden{% endblock %}
+
+
+{% block container %}
+    <div class="container">
+        <div class="center-form panel">
+            <div class="panel-body">
+                <h4 class="text-center"><i class="ion-log-in"></i>Access forbidden</h4>
+                <br/>
+                <p class="text-center text-muted">
+                    <small>You are not logged in. Please <a href="/signin">sign in</a> or <a href="/signup">sign up</a>.</small>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

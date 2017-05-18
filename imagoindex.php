@@ -174,6 +174,28 @@ $app->get('/signout', function() use ($app) {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //**********************************
 //************* PHOTOS *************
 $app->get('/photos', function() use ($app) {
@@ -181,12 +203,16 @@ $app->get('/photos', function() use ($app) {
         $app->render('forbidden.html.twig');
         return;
     }
-    $app->render('photos.html.twig');
+    $userId = $_SESSION['imagouser']['id'];
+    $photoList = DB::query("SELECT imageData, imageMimeType FROM photos WHERE userID=%i ORDER BY id DESC", $userId);
+    $app->render('photos.html.twig', array(
+        'photoList' => $photoList
+    ));
 });
 
 $app->get('/photos', function() use ($app) {
     if (!$_SESSION['imagouser']) {
-        $app->render('signin.html.twig');
+        $app->render('forbidden.html.twig');
         return;
     }
     $userId = $_SESSION['imagouser']['id'];
@@ -243,7 +269,8 @@ $app->post('/photos/add', function() use ($app) {
             'imageData' => $imageBinaryData,
             'imageMimeType' => $mimeType
         ));
-        $app->render('photos_add_success.html.twig');             //change to FLASH message after  **********************************
+        echo "<script>window.close();</script>";
+        $app->render('photos.html.twig');             //change to FLASH message after  **********************************
     } else {
         // TODO: keep values entered on failed submission
         $app->render('photos_add.html.twig');
