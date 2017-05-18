@@ -1,18 +1,26 @@
-{% extends "master.html.twig" %}
+{% extends "master2.html.twig" %}
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
             <li class="active">
                 <a href="/profile"><b>{{ imagouser.name }} | Profile</b></a>
             </li>
+            <!--
             <li>
                 <input id="upload" type="file" name="image" style="display: none;" multiple>
             </li>
+            -->
             <li>
+                <a href="/photos" onclick="window.open('photos/add', 'Pagina',
+                                'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=1024, HEIGHT=700');">
+                                Add Photo 
+                </a>
+                <!--
                 <a href="" id="upload_link">Add photo</a>​
-                {% if v.imagePath %}
-                    <img width="50" src="/{{v.imagePath}}">
-                {% endif %}
+                % if v.imagePath %}
+                    <img width="50" src="/{v.imagePath}}">
+                % endif %}
+                -->
             </li>
             <li>
                 <a href="/deletephoto">Delete Photo</a>
@@ -22,7 +30,7 @@
             </li>
         </ul>
     </div>
-
+<!--
     <script>
         $(function () {
             $("#upload_link").on('click', function (e) {
@@ -31,8 +39,9 @@
             });
         });
     </script>
+-->
 {% endblock navbarSign %}
-{% block content %}
+{% block container %}
     <div class="row">
         <div class="col-md-12">
             <div class="section">
@@ -45,7 +54,7 @@
                     <div class="row">
                         {% for p in photoList %}
                         <div class="col-md-3">
-                            <a href="#"><img src="/{{p.imagePath}}" class="img-responsive"></a>
+                            <a href="/photos"><img src="/{{p.imagePath}}" class="img-responsive"></a>
                         </div>
                             {% endfor %}
                     </div>
@@ -55,5 +64,5 @@
     </div>
 
 
-{% endblock content %}
+{% endblock container %}
 
