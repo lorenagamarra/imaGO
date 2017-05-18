@@ -6,13 +6,9 @@
                 <a href="/profile"><b>{{ imagouser.name }} | Profile</b></a>
             </li>
             <li>
-                <!--
-                <a href="#" onclick="window.open('http://codigofonte.net', 'Pagina',
-                                'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=1024, HEIGHT=700');">
-                                Add Photo 
-                </a>
-                -->
-                <input id="upload" type="file" name="image" style="display: none;">
+                <input id="upload" type="file" name="image" style="display: none;" multiple>
+            </li>
+            <li>
                 <a href="" id="upload_link">Add photo</a>​
                 {% if v.imagePath %}
                     <img width="50" src="/{{v.imagePath}}">
@@ -47,32 +43,11 @@
                         </div>
                     </div>
                     <div class="row">
+                        {% for p in photoList %}
                         <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
+                            <a href="#"><img src="/{{p.imagePath}}" class="img-responsive"></a>
                         </div>
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="#"><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-                        </div>
+                            {% endfor %}
                     </div>
                 </div>
             </div>
