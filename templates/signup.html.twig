@@ -1,5 +1,33 @@
 {% extends "master.html.twig" %}
 
+{% block title %}imaGO - Sign Up{% endblock %}
+
+{% block headExtra %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+            $(document).ready(function () {
+                    $("#emailInUse").hide();
+                    $("input[name=email]").keyup(function () {
+                            var email = $(this).val();
+                            //console.log("Keyup: " + email);
+                            if (email === "") {
+                                    $("#emailInUse").hide();
+                                    return;
+                            }
+                            $.get("/ajax/emailused/" + email, function (result) {
+                                    result = eval(result);
+                                    if (result) {
+                                            $("#emailInUse").show();
+                                            return;
+                                    } else {
+                                            $("#emailInUse").hide();
+                                    }
+                            });
+                    });
+            });
+    </script>
+{% endblock %}
+
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
@@ -15,34 +43,43 @@
 
 
 {% block container %}
-    {% if errorList %}
-        <ul class="errorList">
-            {% for error in errorList %}
-                <li>{{ error }}</li>
-                {% endfor %}
-        </ul>
-    {% endif %}
     <div class="container">
-
         <div class="center-form panel">
             <div class="panel-body">
-                <h4 class="text-center"><i class="ion-person-add"></i> Sign up</h4>
+                <button class="btn btn-block btn-facebook">
+                    <i class="ion-social-facebook"></i>Sign in with Facebook
+                </button>
+
+                <div class="signup-or-separator">
+                    <hr>
+                </div>
+
+                <h4 class="text-center"><i class="ion-person-add"></i>Sign up</h4>
+
+                {% if errorList %}
+                    <ul class="errorList">
+                        {% for error in errorList %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                    </ul>
+                {% endif %}
+
                 <form method="post" name="signupForm">
                     <div class="form-group has-feedback">
-                        <input class="form-control input-lg" type="text" id="name" name="name" placeholder="Name" required autofocus>
+                        <input class="form-control input-lg" type="text" id="name" name="name" placeholder="Name" autofocus value="{{v.name}}">
                         <span class="ion-at form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback" >
-                        <input class="form-control input-lg" type="email" id="email" name="email" placeholder="Email" required autofocus>
+                        <input class="form-control input-lg" type="email" id="email" name="email" placeholder="Email" autofocus value="{{v.email}}">
+                        <span id="emailInUse">Email already registred</span>
                         <span class="ion-at form-control-feedback"></span>
                     </div>
-
                     <div class="form-group has-feedback">
-                        <input class="form-control input-lg" type="password" name="pass1" placeholder="Password" required>
+                        <input class="form-control input-lg" type="password" name="pass1" placeholder="Password" autofocus>
                         <span class="ion-key form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input class="form-control input-lg" type="password" name="pass2" placeholder="Password (repeated)" required>
+                        <input class="form-control input-lg" type="password" name="pass2" placeholder="Password (repeated)" autofocus>
                         <span class="ion-key form-control-feedback"></span>
                     </div>
 
@@ -51,10 +88,11 @@
                     <button type="submit" class="btn btn-block btn-primary">Sign up</button>
                     <br/>
 
-                    <p class="text-center text-muted"><small>Already have an account? <a href="#/login">Log in now</a></small></p>
+                    <p class="text-center text-muted"><small>Already have an account? <a href="/signin">Sign in now</a></small></p>
+
                 </form>
+
             </div>
         </div>
-
     </div>
 {% endblock container %}

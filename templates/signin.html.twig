@@ -1,6 +1,6 @@
 {% extends "master.html.twig" %}
 
-
+{% block title %}imaGO - Sign In{% endblock %}
 
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
@@ -14,51 +14,55 @@
         </ul>
     </div>
 {% endblock navbarSign %}
+
+
+
 {% block container %}
-    {% if error %}
-        <p class="errorList">Login failed try again.</p>
-    {% endif %}
     <div class="container">
         <div class="center-form panel">
             <div class="panel-body">
-                <h4 class="text-center"><i class="ion-log-in"></i> Log in</h4>
+
+                {% if error %}
+                    <p class="errorList">Login failed try again.</p>
+                {% endif %}
+
+                <button class="btn btn-block btn-facebook">
+                    <i class="ion-social-facebook"></i>Sign in with Facebook
+                </button>
+
+                <div class="signup-or-separator">
+                    <hr>
+                </div>
+
+                <h4 class="text-center"><i class="ion-log-in"></i>Sign in</h4>
 
                 <form name="loginForm" method="post">
                     <div class="form-group has-feedback"">
-                        <input class="form-control input-lg" type="text" name="email" placeholder="Email" required autofocus>
+                        <input class="form-control input-lg" type="text" name="email" placeholder="Email" autofocus>
                         <span class="ion-at form-control-feedback"></span>
                         <div class="help-block" >
-                            
+
                         </div>
                     </div>
 
                     <div class="form-group has-feedback">
-                        <input class="form-control input-lg" type="password" name="pass1" placeholder="Password" required>
+                        <input class="form-control input-lg" type="password" name="pass1" placeholder="Password" autofocus>
                         <span class="ion-key form-control-feedback"></span>
                         <div class="help-block">
-                            
+
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-block btn-success">Log in</button>
+                    <button type="submit" class="btn btn-block btn-success">Sign in</button>
 
                     <br/>
 
                     <p class="text-center text-muted">
                         <small>Don't have an account yet? <a href="/signup">Sign up</a></small>
                     </p>
-
-                    <div class="signup-or-separator">
-                        <h6 class="text">or</h6>
-                        <hr>
-                    </div>
                 </form>
-                <button class="btn btn-block btn-instagram">
-                    <i class="ion-social-instagram"></i> Sign in with Instagram
-                </button>
             </div>
         </div>
-
     </div>
 {% endblock container %}
 

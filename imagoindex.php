@@ -113,12 +113,7 @@ $app->post('/signup', function() use ($app) {
             'email' => $email,
             'password' => $pass1
         ));
-        
-        //AFTER SIGN UP, DO LOGIN AUTOMATICALLY AND GO TO photos.html
-        $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
-        unset($user['password']);
-        $_SESSION['imagouser'] = $user;
-        $app->render('photos.html.twig');
+        $app->render('signup_success.html.twig');
     }
 });
 
@@ -165,7 +160,6 @@ $app->post('/signin', function() use ($app) {
         $app->render('signin.html.twig', array("error" => true));
     } else {
         unset($user['password']);
-        $_SESSION['imagouser'] = $user;
         $app->render('photos.html.twig');
     }
 });
@@ -174,10 +168,6 @@ $app->post('/signin', function() use ($app) {
 //**********************************
 //******* SIGN OUT (logout) ********
 $app->get('/signout', function() use ($app) {
-    if (!$_SESSION['imagouser']) {
-        $app->render('home.html.twig');
-        return;
-    }
     unset($_SESSION['imagouser']);
     $app->render('home.html.twig');                  
 });
