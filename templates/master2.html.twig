@@ -1,5 +1,5 @@
 <html><head>
-        <title>imaGO - My Photos</title>
+        <title>imaGO - Home</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -7,6 +7,7 @@
         <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="/web/imaGOCSS.css" rel="stylesheet" type="text/css">
     </head><body>
+        
         <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -16,53 +17,37 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#"><span>imaGO</span></a>
+                    <a class="navbar-brand" href="/"><span>imaGO</span></a>
                 </div>
-                <div class="collapse navbar-collapse" id="navbar-ex-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="active">
-                            <a href="#">Home</a>
-                        </li>
-                        <li>
-                            <a href="#">Sign In</a>
-                        </li>
-                        <li>
-                            <a href="#">Sign Up</a>
-                        </li>
-                    </ul>
-                </div>
+                {% block navbarSign %}
+                {% endblock navbarSign %}
             </div>
         </div>
-
-        <div id="main" class="section text-left">
-
-            <div class="container">
-                {% block content %}
-
-                {% endblock %}
-            </div>
+        <div id="container" class="cover">
+            {% block container %}
+            {% endblock container %}
         </div>
         <footer>
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
-                        <p>Copyright imaGO©</p>
+                        <p class="text-center">Copyright imaGO©</p>
                     </div>
                     <div class="col-sm-6">
                         <div class="row">
-                            <div class="col-md-12 hidden-lg hidden-md hidden-sm text-left">
-                                <a href="#"><i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
-                                <a href="#"><i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
-                                <a href="#"><i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
-                                <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+                            <div class="col-md-12 hidden-lg hidden-md hidden-sm text-center">
+                                <a href="#"><i class="fa fa-fw fa-instagram fa-lg text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-fw fa-lg fa-twitter text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-facebook fa-fw fa-lg text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-fw fa-github fa-lg text-inverse"></i></a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 hidden-xs text-right">
-                                <a href="#"><i class="fa fa-2x fa-fw fa-instagram text-inverse"></i></a>
-                                <a href="#"><i class="fa fa-2x fa-fw fa-twitter text-inverse"></i></a>
-                                <a href="#"><i class="fa fa-2x fa-facebook fa-fw text-inverse"></i></a>
-                                <a href="#"><i class="fa fa-2x fa-fw fa-github text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-fw fa-instagram fa-lg text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-fw fa-lg fa-twitter text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-facebook fa-fw fa-lg text-inverse"></i></a>
+                                <a href="#"><i class="fa fa-fw fa-github fa-lg text-inverse"></i></a>
                             </div>
                         </div>
                     </div>
@@ -71,50 +56,4 @@
         </footer>
 
 
-
-        <script>
-            function openNav() {
-                document.getElementById("mySidenav").style.width = "100px";
-                document.getElementById("main").style.marginLeft = "100px";
-            }
-
-            function closeNav() {
-                document.getElementById("mySidenav").style.width = "0";
-                document.getElementById("main").style.marginLeft = "0";
-            }
-
-
-
-
-            // Get the modal
-            var modal = document.getElementById('myModal');
-
-// Get the button that opens the modal
-            var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-            var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on the button, open the modal 
-            btn.onclick = function () {
-                modal.style.display = "block";
-            }
-
-// When the user clicks on <span> (x), close the modal
-            span.onclick = function () {
-                modal.style.display = "none";
-            }
-
-// When the user clicks anywhere outside of the modal, close it
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-        </script>
-
-
-
-
-    </body>
-</html>
+    </body></html>
