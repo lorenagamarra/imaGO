@@ -160,7 +160,8 @@ $app->post('/signin', function() use ($app) {
         $app->render('signin.html.twig', array("error" => true));
     } else {
         unset($user['password']);
-        $app->render('photos.html.twig');
+        $_SESSION['imagouser'] = $user;
+        $app->render('signin_success.html.twig');
     }
 });
 
@@ -177,7 +178,7 @@ $app->get('/signout', function() use ($app) {
 //************* PHOTOS *************
 $app->get('/photos', function() use ($app) {
     if (!$_SESSION['imagouser']) {
-        $app->render('signin.html.twig');
+        $app->render('forbidden.html.twig');
         return;
     }
     $app->render('photos.html.twig');
