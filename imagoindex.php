@@ -18,12 +18,12 @@ $log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
 //************************************
 
 /*
-DB::$user = 'imago';
-DB::$dbName = 'imago';
-DB::$password = 'viXftFK4GpTbhQvu';
-DB::$port = 3306;
-DB::$encoding = 'utf8';
-*/
+  DB::$user = 'imago';
+  DB::$dbName = 'imago';
+  DB::$password = 'viXftFK4GpTbhQvu';
+  DB::$port = 3306;
+  DB::$encoding = 'utf8';
+ */
 
 DB::$user = 'cp4776_imago';
 DB::$dbName = 'cp4776_imago';
@@ -33,6 +33,7 @@ DB::$password = 'viXftFK4GpTbhQvu';
 //       TEACHER SPECIAL CODE
 DB::$error_handler = 'sql_error_handler';
 DB::$nonsql_error_handler = 'nonsql_error_handler';
+
 function nonsql_error_handler($params) {
     global $app, $log;
     $log->error("Database error: " . $params['error']);
@@ -40,6 +41,7 @@ function nonsql_error_handler($params) {
     $app->render('error_internal.html.twig');
     die;
 }
+
 function sql_error_handler($params) {
     global $app, $log;
     $log->error("SQL error: " . $params['error']);
@@ -48,14 +50,9 @@ function sql_error_handler($params) {
     $app->render('error_internal.html.twig');
     die; // don't want to keep going if a query broke
 }
+
 //       TEACHER SPECIAL CODE
 //************************************
-
-
-
-
-
-
 // Slim creation and setup
 $app = new \Slim\Slim(array(
     'view' => new \Slim\Views\Twig()
@@ -93,7 +90,6 @@ $app->get('/', function() use ($app) {
 
 //**********************************
 //***** SIGN UP (registration) *****
-
 // STATE 1: First show
 $app->get('/signup', function() use ($app) {
     if (!$_SESSION['imagouser']) {
@@ -105,9 +101,8 @@ $app->get('/signup', function() use ($app) {
 
 // Receiving a submission
 $app->post('/signup', function() use ($app) {
-    
+
     //USE FACEBOOK/GOOGLE ACCOUNT  *********************************************************************
-    
     // extract variables
     $name = $app->request()->post('name');
     $email = $app->request()->post('email');
@@ -117,7 +112,7 @@ $app->post('/signup', function() use ($app) {
     $valueList = array('email' => $email, 'name' => $name);
     // check for errors and collect error messages
     $errorList = array();
-    
+
     if (strlen($name) < 6 || strlen($name) > 50) {
         array_push($errorList, "Name must be between 6-50 characters long");
     }
@@ -171,16 +166,14 @@ $app->get('/ajax/emailused/:email', function($email) {
 //********* SIGN IN (login) ********
 $app->get('/signin', function() use ($app) {
     if (!$_SESSION['imagouser']) {
-        $app->render('signin.html.twig');             
+        $app->render('signin.html.twig');
         return;
     }
     $app->render('photos.html.twig');
-    
-    
 });
 
 $app->post('/signin', function() use ($app) {
-    print_r($_POST);    
+    print_r($_POST);
     $email = $app->request()->post('email');
     $pass = $app->request()->post('pass1');
     // verification    
@@ -208,7 +201,7 @@ $app->post('/signin', function() use ($app) {
 //******* SIGN OUT (logout) ********
 $app->get('/signout', function() use ($app) {
     unset($_SESSION['imagouser']);
-    $app->render('home.html.twig');                  
+    $app->render('home.html.twig');
 });
 
 
@@ -216,18 +209,18 @@ $app->get('/signout', function() use ($app) {
 //**********************************
 //************* PHOTOS *************
 /*
-$app->get('/photos', function() use ($app) {
-    if (!$_SESSION['imagouser']) {
-        $app->render('forbidden.html.twig');
-        return;
-    }
-    $userId = $_SESSION['imagouser']['id'];
-    $photoList = DB::query("SELECT imageData, imageMimeType FROM photos WHERE userID=%i ORDER BY id DESC", $userId);
-    $app->render('photos.html.twig', array(
-        'photoList' => $photoList
-    ));
-});
-*/
+  $app->get('/photos', function() use ($app) {
+  if (!$_SESSION['imagouser']) {
+  $app->render('forbidden.html.twig');
+  return;
+  }
+  $userId = $_SESSION['imagouser']['id'];
+  $photoList = DB::query("SELECT imageData, imageMimeType FROM photos WHERE userID=%i ORDER BY id DESC", $userId);
+  $app->render('photos.html.twig', array(
+  'photoList' => $photoList
+  ));
+  });
+ */
 
 $app->get('/photos', function() use ($app) {
     if (!$_SESSION['imagouser']) {
@@ -235,28 +228,30 @@ $app->get('/photos', function() use ($app) {
         return;
     }
     $userId = $_SESSION['imagouser']['id'];
+    $photoIdList = DB::queryFirstColumn("SELECT id FROM photos WHERE userID=%i", $userId);
+    $app->render('photos.html.twig', array('photoList' => $photoIdList));
+
+
+
     /*
-    $photoList = DB::query("SELECT imageData, imageMimeType FROM photos WHERE userID=%i ORDER BY id DESC", $userId);
-    foreach ($photoList as $row) {
-        echo $row['imageData'] . $row['imageMimeType'];
-        //echo '<img src="data:image/jpeg;base64,'.base64_encode( $result['image'] ).'"/>';
-        //https://meekro.com/docs.php
-    }
+      $photoList = DB::query("SELECT imageData, imageMimeType FROM photos WHERE userID=%i ORDER BY id DESC", $userId);
+      foreach ($photoList as $row) {
+      echo $row['imageData'] . $row['imageMimeType'];
+      //echo '<img src="data:image/jpeg;base64,'.base64_encode( $result['image'] ).'"/>';
+      //https://meekro.com/docs.php
+      }
      */
-    
-    $photoList = DB::queryFirstRow("SELECT imageData,imageMimeType FROM photos "
-            . " WHERE userID=%i", $userId);
-    print_r($photoList);
-    if (!$photoList) {
-        $app->response()->status(404);
-        echo "404 - not found";
-    } else {
-       
-        $app->response->headers->set('Content-Type', $photoList['imageMimeType']);
-        echo $photoList['imageData'];
+});
+
+$app->get('/photoview/:id', function($id) {
+    if (!$_SESSION['imagouser']) {
+        $app->render('forbidden.html.twig');
+        return;
     }
-    
-    
+    $userId = $_SESSION['imagouser']['id'];
+    $photo = DB::queryFirstRow("SELECT * FROM photos WHERE userID=%i AND id=%i", $userId, $id);
+    $app->response->headers->set('Content-Type', $photo['imageMimeType']);
+    echo $photo['imageData'];
 });
 
 
@@ -277,11 +272,11 @@ $app->post('/photos/add', function() use ($app) {
     }
 
     // extract variables
-    $image = isset($_FILES['image']) ? $_FILES['image'] : array();
+    $image = $_FILES['image'];
 
     // verify inputs
     $errorList = array();
-    if ($image) {
+    if ($image['error'] == 0) {
         $imageInfo = getimagesize($image["tmp_name"]);
         if (!$imageInfo) {
             array_push($errorList, "File does not look like an valid image");
@@ -292,6 +287,8 @@ $app->post('/photos/add', function() use ($app) {
                 array_push($errorList, "Image must at most 3000 by 3000 pixels");
             }
         }
+    } else {
+        array_push($errorList, "You must select a file");
     }
     // receive data and insert
     if (!$errorList) {
@@ -303,7 +300,7 @@ $app->post('/photos/add', function() use ($app) {
             'imageData' => $imageBinaryData,
             'imageMimeType' => $mimeType
         ));
-        echo "<script>window.close();</script>";
+        // echo "<script>window.close();</script>";
         $app->render('photos.html.twig');             //change to FLASH message after  **********************************
     } else {
         // TODO: keep values entered on failed submission
