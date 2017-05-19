@@ -48,7 +48,10 @@
                     <div class="row">
                         {% for p in photoList %}
                             <div class="col-md-3">
-                                <a href="/photos"><img src="/photoview/{{p.id}}" width="120" class="img-responsive"></a>
+                                <!-- <a href="/photos">
+                                    <img src="/photoview/{{p.id}}" width="120" class="img-responsive"> -->
+                                    <img src="{{p.id}}" width="120" class="img-responsive">
+                                <!-- </a> -->
                             </div>
                         {% endfor %}
                     </div>

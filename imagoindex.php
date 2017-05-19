@@ -228,8 +228,12 @@ $app->get('/photos', function() use ($app) {
         return;
     }
     $userId = $_SESSION['imagouser']['id'];
-    $photoIdList = DB::queryFirstColumn("SELECT id FROM photos WHERE userID=%i", $userId);
-    $app->render('photos.html.twig', array('photoList' => $photoIdList));
+    //$photoIdList = DB::queryFirstColumn("SELECT id FROM photos WHERE userID=%i", $userId);
+    //SELECT imageData, imageMimeType
+    $photoList = DB::query("SELECT * FROM photos WHERE userID=%i", $userId);
+    $app->response->headers->set('Content-Type', $photoList['photoMimeType']);
+        echo $photoList['imageData'];
+    //$app->render('photos.html.twig', array('photoList' => $photoIdList));
 });
 
 $app->get('/photoview/:id', function($id) {
