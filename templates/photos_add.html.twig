@@ -24,6 +24,7 @@
 {% endblock navbarSign %}
 
 {% block container %}
+    <br><br><br><br><br><br>
     {% if errorList %}
     <ul class="errorList">
         {% for error in errorList %}
@@ -34,7 +35,7 @@
     
     <form method="post" enctype="multipart/form-data">
         Image: <input type="file" name="image" accept="image/*"><br>
-        {% if v.imagePath %}
+        {% if p.imagePath %}
             <img width="50" src="/{{v.imagePath}}">
         {% endif %}
         <input type="submit" value="Save Photo">
