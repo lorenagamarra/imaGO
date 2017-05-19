@@ -14,16 +14,7 @@
             </li>
             -->
             <li>
-                <a href="/photos" onclick="window.open('photos/add', 'Pagina',
-                                'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=1024, HEIGHT=700');">
-                    Add Photo 
-                </a>
-                <!--
-                <a href="" id="upload_link">Add photo</a>​
-                % if v.imagePath %}
-                    <img width="50" src="/{v.imagePath}}">
-                % endif %}
-                -->
+                <a href="/photos/add">Add Photo</a>
             </li>
             <li>
                 <a href="/deletephoto">Delete Photo</a>
@@ -56,22 +47,9 @@
                     </div>
                     <div class="row">
                         {% for p in photoList %}
-                            
                             <div class="col-md-3">
-                                <a href="/photos">
-                                    
-                                </a>
-                                <img src="/photoview/{{p.id}}" width="40" class="img-responsive">
+                                <a href="/photos"><img src="/photoview/{{p.id}}" width="120" class="img-responsive"></a>
                             </div>
-                            <!--
-                            <div data-role="popup" id="myPopup">
-                                <p>This is my picture!</p> 
-                                <a href="#pageone" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-                                <img src="/{p.imagePath}}" style="width:800px;height:400px;" alt="Skaret View">
-                            </div>
-                            -->
-
-                            
                         {% endfor %}
                     </div>
                 </div>

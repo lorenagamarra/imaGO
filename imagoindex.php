@@ -230,17 +230,6 @@ $app->get('/photos', function() use ($app) {
     $userId = $_SESSION['imagouser']['id'];
     $photoIdList = DB::queryFirstColumn("SELECT id FROM photos WHERE userID=%i", $userId);
     $app->render('photos.html.twig', array('photoList' => $photoIdList));
-
-
-
-    /*
-      $photoList = DB::query("SELECT imageData, imageMimeType FROM photos WHERE userID=%i ORDER BY id DESC", $userId);
-      foreach ($photoList as $row) {
-      echo $row['imageData'] . $row['imageMimeType'];
-      //echo '<img src="data:image/jpeg;base64,'.base64_encode( $result['image'] ).'"/>';
-      //https://meekro.com/docs.php
-      }
-     */
 });
 
 $app->get('/photoview/:id', function($id) {
@@ -286,6 +275,19 @@ $app->post('/photos/add', function() use ($app) {
             if ($width > 3000 || $height > 3000) {
                 array_push($errorList, "Image must at most 3000 by 3000 pixels");
             }
+            // FIXME: opened a security hole here! .. must be forbidden
+            if (strstr($image["name"], "..")) {
+                array_push($errorList, "File name invalid");
+            }
+            // FIXME: only allow select extensions .jpg .gif .png, never .php
+            $ext = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
+            if (!in_array($ext, array('jpg', 'jpeg', 'gif', 'png'))) {
+                array_push($errorList, "File name invalid");
+            }
+            // FIXME: do not allow file to override an previous upload
+            if (file_exists('uploads/' . $image['name'])) {
+                array_push($errorList, "File name already exists. Will not override.");
+            }
         }
     } else {
         array_push($errorList, "You must select a file");
@@ -300,8 +302,10 @@ $app->post('/photos/add', function() use ($app) {
             'imageData' => $imageBinaryData,
             'imageMimeType' => $mimeType
         ));
-        // echo "<script>window.close();</script>";
-        $app->render('photos.html.twig');             //change to FLASH message after  **********************************
+        //change to FLASH message after  **********************************
+        $app->render("photos_add_success.html.twig", array(
+            "imagePath" => $imagePath));
+       
     } else {
         // TODO: keep values entered on failed submission
         $app->render('photos_add.html.twig');
