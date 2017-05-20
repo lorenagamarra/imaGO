@@ -1,6 +1,31 @@
 {% extends "master2.html.twig" %}
 
 {% block title %}Add Photo{% endblock %}
+{% block headExtra %}
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-18035087-2']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+
+        $(document).ready(function () {
+            $("#submit").hide();
+            $("#files").on("change", function () {
+                $("#submit").show();
+            })
+        });
+
+    </script>
+{% endblock %}
+
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
@@ -26,18 +51,46 @@
 {% block container %}
     <br><br><br><br><br><br>
     {% if errorList %}
-    <ul class="errorList">
-        {% for error in errorList %}
-            <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
+        <ul class="errorList">
+            {% for error in errorList %}
+                <li>{{ error }}</li>
+                {% endfor %}
+        </ul>
     {% endif %}
-    
-    <form method="post" enctype="multipart/form-data">
-        Image: <input type="file" name="image" accept="image/*"><br>
-        {% if p.imagePath %}
-            <img width="50" src="/{{v.imagePath}}">
-        {% endif %}
-        <input type="submit" value="Save Photo">
-    </form>    
+
+    <div class="container">
+        <div class="center-form panel">
+            <div class="panel-body" style="text-align:center">
+
+                <form method="post" enctype="multipart/form-data">
+                    <div class="info">
+                        Select image:<br><br>  <input type="file" id="files" name="image" style="margin: 0 auto"/> <br>
+                        <script>
+                            if (window.FileReader) {
+                                function handleFileSelect(evt) {
+                                    var files = evt.target.files;
+                                    var f = files[0];
+                                    var reader = new FileReader();
+
+                                    reader.onload = (function (theFile) {
+                                        return function (e) {
+                                            document.getElementById('list').innerHTML = ['<img src="', e.target.result, '" title="', theFile.name, '" width="200"/>'].join('');
+                                        };
+                                    })(f);
+
+                                    reader.readAsDataURL(f);
+                                }
+                            } else {
+                                alert('This browser does not support FileReader');
+                            }
+
+                            document.getElementById('files').addEventListener('change', handleFileSelect, false);
+                        </script>
+                        <output id="list"></output><br>
+                    </div>
+                    <input type="submit" value="Save Photo" name="submit" id="submit">
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock container %}

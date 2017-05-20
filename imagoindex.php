@@ -77,20 +77,18 @@ $twig->addGlobal('imagouser', $_SESSION['imagouser']);
 
 //**********************************
 //************** HOME **************
-
 $app->get('/', function() use ($app) {
     if (!$_SESSION['imagouser']) {
         $app->render('home.html.twig');
         return;
     }
-    $app->render('photos.html.twig');
+    $app->render('photos.html.twig');    
 });
 
 
 
 //**********************************
 //***** SIGN UP (registration) *****
-// STATE 1: First show
 $app->get('/signup', function() use ($app) {
     if (!$_SESSION['imagouser']) {
         $app->render('signup.html.twig');
@@ -99,10 +97,8 @@ $app->get('/signup', function() use ($app) {
     $app->render('photos.html.twig');
 });
 
-// Receiving a submission
-$app->post('/signup', function() use ($app) {
 
-    //USE FACEBOOK/GOOGLE ACCOUNT  *********************************************************************
+$app->post('/signup', function() use ($app) {
     // extract variables
     $name = $app->request()->post('name');
     $email = $app->request()->post('email');
@@ -173,7 +169,6 @@ $app->get('/signin', function() use ($app) {
 });
 
 $app->post('/signin', function() use ($app) {
-    print_r($_POST);
     $email = $app->request()->post('email');
     $pass = $app->request()->post('pass1');
     // verification    
@@ -206,53 +201,39 @@ $app->get('/signout', function() use ($app) {
 
 
 
-//**********************************
-//************* PHOTOS *************
-/*
-  $app->get('/photos', function() use ($app) {
-  if (!$_SESSION['imagouser']) {
-  $app->render('forbidden.html.twig');
-  return;
-  }
-  $userId = $_SESSION['imagouser']['id'];
-  $photoList = DB::query("SELECT imageData, imageMimeType FROM photos WHERE userID=%i ORDER BY id DESC", $userId);
-  $app->render('photos.html.twig', array(
-  'photoList' => $photoList
-  ));
-  });
- */
-
+//***********************************
+//*********** PHOTOS LIST ***********
 $app->get('/photos', function() use ($app) {
     if (!$_SESSION['imagouser']) {
         $app->render('forbidden.html.twig');
         return;
     }
+    $app->render('photos.html.twig');
     $userId = $_SESSION['imagouser']['id'];
-    //$photoIdList = DB::queryFirstColumn("SELECT id FROM photos WHERE userID=%i", $userId);
-    //SELECT imageData, imageMimeType
-    $photoList = DB::query("SELECT * FROM photos WHERE userID=%i", $userId);
-    $app->response->headers->set('Content-Type', $photoList['photoMimeType']);
-        echo $photoList['imageData'];
-    //$app->render('photos.html.twig', array('photoList' => $photoIdList));
+    $photoList = DB::query("SELECT id, imageData, imageMimeType FROM photos WHERE userId=%i", $userId);
+    //$app->response->headers->set('Content-Type', $photoList['imageMimeType']);
+    //echo $photoList['imageData'];
+
 });
 
-$app->get('/photoview/:id', function($id) {
+/*
+$app->get('/photos/:id', function($id) {
     if (!$_SESSION['imagouser']) {
         $app->render('forbidden.html.twig');
         return;
     }
-    $userId = $_SESSION['imagouser']['id'];
-    $photo = DB::queryFirstRow("SELECT * FROM photos WHERE userID=%i AND id=%i", $userId, $id);
-    $app->response->headers->set('Content-Type', $photo['imageMimeType']);
-    echo $photo['imageData'];
+    $app->render('photos.html.twig');
+    $photo = DB::queryFirstRow("SELECT imageData, imageMimeType FROM photos WHERE userID=%i AND id=%i", $userId, $id);
+    //$app->response->headers->set('Content-Type', $photo['imageMimeType']);
+    //echo $photo['imageData'];
 });
-
+*/
 
 //**********************************
 //*********** PHOTOS ADD ***********
 $app->get('/photos/add', function() use ($app) {
     if (!$_SESSION['imagouser']) {
-        $app->render('signin.html.twig');
+        $app->render('forbidden.html.twig');
         return;
     }
     $app->render('photos_add.html.twig');
@@ -260,64 +241,58 @@ $app->get('/photos/add', function() use ($app) {
 
 $app->post('/photos/add', function() use ($app) {
     if (!$_SESSION['imagouser']) {
-        $app->render('signin.html.twig');
+        $app->render('forbidden.html.twig');
         return;
     }
 
     // extract variables
-    $image = $_FILES['image'];
-
+    $image = isset($_FILES['image']) ? $_FILES['image'] : array();
+            
     // verify inputs
     $errorList = array();
-    if ($image['error'] == 0) {
+    if ($image) {
         $imageInfo = getimagesize($image["tmp_name"]);
         if (!$imageInfo) {
             array_push($errorList, "File does not look like an valid image");
         } else {
-            $width = $imageInfo[0];
-            $height = $imageInfo[1];
-            if ($width > 3000 || $height > 3000) {
-                array_push($errorList, "Image must at most 3000 by 3000 pixels");
-            }
-            // FIXME: opened a security hole here! .. must be forbidden
+            // AVOID ".." in image name
             if (strstr($image["name"], "..")) {
                 array_push($errorList, "File name invalid");
-            }
-            // FIXME: only allow select extensions .jpg .gif .png, never .php
+            }            
+
+            // allow select extensions .jpg .gif .png, never .php
             $ext = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
             if (!in_array($ext, array('jpg', 'jpeg', 'gif', 'png'))) {
-                array_push($errorList, "File name invalid");
+                array_push($errorList, "File extension invalid");
             }
-            // FIXME: do not allow file to override an previous upload
-            if (file_exists('uploads/' . $image['name'])) {
-                array_push($errorList, "File name already exists. Will not override.");
+
+            // LIMIT IMAGE SIZE
+            $width = $imageInfo[0];
+            $height = $imageInfo[1];
+            if ($width > 7000 || $height > 7000) {
+                array_push($errorList, "Image must at most 7000 by 7000 pixels");
             }
         }
     } else {
         array_push($errorList, "You must select a file");
     }
+        
     // receive data and insert
     if (!$errorList) {
-        $imageBinaryData = file_get_contents($image['tmp_name']);
         $userId = $_SESSION['imagouser']['id'];
-        $mimeType = mime_content_type($image['tmp_name']);
+        $imageBinaryData = file_get_contents($image['tmp_name']);
+        $imagemimeType = mime_content_type($image['tmp_name']);
         DB::insert('photos', array(
-            'userId' => $userId,
+            'userID' => $userId,
             'imageData' => $imageBinaryData,
-            'imageMimeType' => $mimeType
+            'imageMimeType' => $imagemimeType
         ));
-        //change to FLASH message after  **********************************
-        $app->render("photos_add_success.html.twig", array(
-            "imagePath" => $imagePath));
-       
+        $app->render("photos_add_success.html.twig");
     } else {
-        // TODO: keep values entered on failed submission
         $app->render('photos_add.html.twig');
     }
 });
 
-//***********************************
-//*********** PHOTOS LIST ***********
 
 
 
@@ -427,4 +402,3 @@ $app->post('/photos/add', function() use ($app) {
 
 
 $app->run();
-
