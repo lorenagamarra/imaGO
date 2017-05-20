@@ -77,18 +77,20 @@ $twig->addGlobal('imagouser', $_SESSION['imagouser']);
 
 //**********************************
 //************** HOME **************
+
 $app->get('/', function() use ($app) {
     if (!$_SESSION['imagouser']) {
         $app->render('home.html.twig');
         return;
     }
-    $app->render('photos.html.twig');    
+    $app->render('photos.html.twig');
 });
 
 
 
 //**********************************
 //***** SIGN UP (registration) *****
+// STATE 1: First show
 $app->get('/signup', function() use ($app) {
     if (!$_SESSION['imagouser']) {
         $app->render('signup.html.twig');
@@ -97,8 +99,10 @@ $app->get('/signup', function() use ($app) {
     $app->render('photos.html.twig');
 });
 
-
+// Receiving a submission
 $app->post('/signup', function() use ($app) {
+
+    //USE FACEBOOK/GOOGLE ACCOUNT  *********************************************************************
     // extract variables
     $name = $app->request()->post('name');
     $email = $app->request()->post('email');
@@ -169,6 +173,7 @@ $app->get('/signin', function() use ($app) {
 });
 
 $app->post('/signin', function() use ($app) {
+    print_r($_POST);
     $email = $app->request()->post('email');
     $pass = $app->request()->post('pass1');
     // verification    
@@ -201,39 +206,46 @@ $app->get('/signout', function() use ($app) {
 
 
 
-//***********************************
-//*********** PHOTOS LIST ***********
+//**********************************
+//************* PHOTOS *************
+
 $app->get('/photos', function() use ($app) {
     if (!$_SESSION['imagouser']) {
         $app->render('forbidden.html.twig');
         return;
     }
-    $app->render('photos.html.twig');
     $userId = $_SESSION['imagouser']['id'];
-    $photoList = DB::query("SELECT id, imageData, imageMimeType FROM photos WHERE userId=%i", $userId);
-    //$app->response->headers->set('Content-Type', $photoList['imageMimeType']);
-    //echo $photoList['imageData'];
-
+    $photoIdList = DB::query("SELECT id FROM photos WHERE userID=%i", $userId);
+    print_r($photoIdList);
+    $app->render('photos.html.twig', array('photoIdList' => $photoIdList));
 });
 
-/*
-$app->get('/photos/:id', function($id) {
+$app->get('/photoview/:id(/:operation)', function($id, $operation = '') use ($app) {
     if (!$_SESSION['imagouser']) {
         $app->render('forbidden.html.twig');
         return;
     }
-    $app->render('photos.html.twig');
-    $photo = DB::queryFirstRow("SELECT imageData, imageMimeType FROM photos WHERE userID=%i AND id=%i", $userId, $id);
-    //$app->response->headers->set('Content-Type', $photo['imageMimeType']);
-    //echo $photo['imageData'];
-});
-*/
+    $userId = $_SESSION['imagouser']['id'];
+    $photo = DB::queryFirstRow("SELECT * FROM photos WHERE userID=%i AND id=%i", $userId, $id);
+    
+    if (!$photo) {
+        $app->response()->status(404);
+        echo "404 - not found";
+    } else {
+        if ($operation == 'download') {
+            $app->response->headers->set('Content-Disposition', 'attachment; somefile.jpg');
+        }
+        $app->response->headers->set('Content-Type', $photo['imageMimeType']);
+        echo $photo['imageData'];
+    }
+})->conditions(array('operation' => 'download'));
+
 
 //**********************************
 //*********** PHOTOS ADD ***********
 $app->get('/photos/add', function() use ($app) {
     if (!$_SESSION['imagouser']) {
-        $app->render('forbidden.html.twig');
+        $app->render('signin.html.twig');
         return;
     }
     $app->render('photos_add.html.twig');
@@ -241,164 +253,72 @@ $app->get('/photos/add', function() use ($app) {
 
 $app->post('/photos/add', function() use ($app) {
     if (!$_SESSION['imagouser']) {
-        $app->render('forbidden.html.twig');
+        $app->render('signin.html.twig');
         return;
     }
-
+    print_r($_POST);
+    print_r($_FILES);
     // extract variables
-    $image = isset($_FILES['image']) ? $_FILES['image'] : array();
-            
+    $image = $_FILES['image'];
+    /* Process image with GD library */
+    $verifyimg = getimagesize($_FILES['image']['tmp_name']);
+
     // verify inputs
     $errorList = array();
+    //if ($image['error'] == 0) {
     if ($image) {
         $imageInfo = getimagesize($image["tmp_name"]);
         if (!$imageInfo) {
             array_push($errorList, "File does not look like an valid image");
         } else {
-            // AVOID ".." in image name
-            if (strstr($image["name"], "..")) {
-                array_push($errorList, "File name invalid");
-            }            
-
-            // allow select extensions .jpg .gif .png, never .php
-            $ext = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
-            if (!in_array($ext, array('jpg', 'jpeg', 'gif', 'png'))) {
-                array_push($errorList, "File extension invalid");
-            }
-
-            // LIMIT IMAGE SIZE
             $width = $imageInfo[0];
             $height = $imageInfo[1];
-            if ($width > 7000 || $height > 7000) {
-                array_push($errorList, "Image must at most 7000 by 7000 pixels");
+            if ($width > 3000 || $height > 3000) {
+                array_push($errorList, "Image must at most 3000 by 3000 pixels");
+            }
+
+            // FIXME: opened a security hole here! .. must be forbidden
+            if (strstr($image["name"], "..")) {
+                array_push($errorList, "File name invalid");
+            }
+
+            /* Make sure the MIME type is an image */
+            $pattern = "#^(image/)[^\s\n<]+$#i";
+            if (!preg_match($pattern, $verifyimg['mime'])) {
+                die("Only image files are allowed!");
+            }
+
+            // FIXME: only allow select extensions .jpg .gif .png, never .php
+            $ext = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
+            if (!in_array($ext, array('jpg', 'jpeg', 'gif', 'png'))) {
+                array_push($errorList, "File name invalid");
+            }
+            // FIXME: do not allow file to override an previous upload
+            if (file_exists('uploads/' . $image['name'])) {
+                array_push($errorList, "File name already exists. Will not override.");
             }
         }
     } else {
         array_push($errorList, "You must select a file");
     }
-        
     // receive data and insert
     if (!$errorList) {
-        $userId = $_SESSION['imagouser']['id'];
         $imageBinaryData = file_get_contents($image['tmp_name']);
-        $imagemimeType = mime_content_type($image['tmp_name']);
+        $userId = $_SESSION['imagouser']['id'];
+        $mimeType = mime_content_type($image['tmp_name']);
         DB::insert('photos', array(
-            'userID' => $userId,
+            'userId' => $userId,
             'imageData' => $imageBinaryData,
-            'imageMimeType' => $imagemimeType
+            'imageMimeType' => $mimeType
         ));
+        //change to FLASH message after  **********************************
         $app->render("photos_add_success.html.twig");
     } else {
+        // TODO: keep values entered on failed submission
         $app->render('photos_add.html.twig');
     }
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 $app->run();
+

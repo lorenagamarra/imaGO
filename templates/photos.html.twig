@@ -2,38 +2,13 @@
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
-            <li class="active">
-                <a href="/profile"><b>{{ imagouser.name }} | Profile</b></a>
-            </li>
-            <li>
-                <a href="/albums">Albums</a>
-            </li>
-            <!--
-            <li>
-                <input id="upload" type="file" name="image" style="display: none;" multiple>
-            </li>
-            -->
-            <li>
-                <a href="/photos/add">Add Photo</a>
-            </li>
-            <li>
-                <a href="/deletephoto">Delete Photo</a>
-            </li>
-            <li>
-                <a href="/signout">Sign Out</a>
-            </li>
+            <li class="active"> <a href="/profile"><b>{{ imagouser.name }} | Profile</b></a> </li>
+            <li> <a href="/albums">Albums</a> </li>
+            <li> <a href="/photos/add">Add Photo</a> </li>
+            <li> <a href="/deletephoto">Delete Photo</a> </li>
+            <li> <a href="/signout">Sign Out</a> </li>
         </ul>
     </div>
-    <!--
-        <script>
-            $(function () {
-                $("#upload_link").on('click', function (e) {
-                    e.preventDefault();
-                    $("#upload:hidden").trigger('click');
-                });
-            });
-        </script>
-    -->
 {% endblock navbarSign %}
 {% block container %}
     <div class="row">
@@ -45,23 +20,18 @@
                             <h1 class="text-center">My Photos</h1>
                         </div>
                     </div>
-
-                    
-                    <table>
-                    {% for p in photoList %}
-                        <tr class="col-md-3">
-                            <a href="/photo/{{p.id}}">
-                                <img src="{{p}}">
-                            </a>
-                        </tr>
-                    {% endfor %}
-                    <table>
-  
+                    <div class="row">
+                        {% for p in photoIdList %}
+                            <div class="col-md-3">
+                                <a href="/photoview/{{p.id}}"><img src="/photoview/{{p.id}}" width="250" class="img-responsive"></a>
+                                <a href="/photoview/{{p.id}}">view alone</a>
+                                <a href="/photoview/{{p.id}}/download">download</a>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 {% endblock container %}
 

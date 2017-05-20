@@ -1,18 +1,20 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>imaGO - Home</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-        <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script type="application/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script type="application/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="/web/imaGOCSS.css" rel="stylesheet" type="text/css">
-        <title>{% block title %}{% endblock %}</title>
-        {% block headExtra %}{% endblock %}
+        <title>{% block title %}{% endblock title%}</title>
+    {% block headExtra %}{% endblock headExtra%}
 </head>
 
 <body>
-    <div class="navbar navbar-default navbar-fixed-top">
+    <br><br><br><br><br><br><br>
+    <div class="navbar navbar-default ">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
@@ -35,7 +37,7 @@
             {% endblock container %}
         </div>
     </div>
-    <footer class="navbar navbar-fixed-bottom">
+    <footer>
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
