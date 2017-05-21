@@ -20,17 +20,20 @@
     <div class="container">
         <div class="center-form panel">
             <div class="panel-body">
-
+                <br><br><br>
                 <p> Are you sure you want to delete this photo? This photo will be deleted from your photo list and all yours albums!!</p>
-                    <div class="col-md-3">
-                        <img src="/photoview/{{photo.id}}" width="250" class="img-responsive">
-                    </div>
-
+                <div class="col-md-3">
+                    <img src="/photoview/{{photo.id}}" width="250" class="img-responsive">
+                </div>
+                <br>
                 <form style="display: inline-block" action="/photos">
-                    <input type="submit" value="Cancel"></form>
+                    <input type="submit" value="Cancel" class="btn btn-success">
+                </form>
                 <form style="display: inline-block" method="post">
                     <input type="hidden" name="delete" value="confirmed">
-                    <input type="submit" value="Yes, delete"></form>
+                    <input type="submit" value="Yes, delete" class="btn btn-danger">
+                </form>
+                <br><br><br>
             </div>
         </div>
     </div>

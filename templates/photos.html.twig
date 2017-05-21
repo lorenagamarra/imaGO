@@ -22,11 +22,14 @@
                     </div>
                     <div class="row">
                         {% for p in photoIdList %}
-                            <div class="col-md-3">
-                                <a href="/photoview/{{p.id}}"><img src="/photoview/{{p.id}}" width="250" class="img-responsive"></a>
-                                <a href="/photoview/{{p.id}}/download">Download</a>
-                                <a href="/photoview/{{p.id}}/delete">Delete</a>
+                            <div class="col-xs-12 col-sm-6 col-lg-3">
+                                <br>
+                                <a href="/photoview/{{p.id}}"><img src="/photoview/{{p.id}}" width="250" class="img-responsive"></a><br>
+                                <a href="/photoview/{{p.id}}/download" class="btn btn-primary">Download</a>
+                                <a href="/photoview/{{p.id}}/delete" class="btn btn-danger">Delete</a>
+                                <br>
                             </div>
+                            <br>
                         {% endfor %}
                     </div>
                 </div>

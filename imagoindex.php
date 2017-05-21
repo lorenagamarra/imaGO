@@ -446,7 +446,7 @@ $app->get('/profile/delete', function() use ($app) {
 $app->post('/profile/delete', function() use ($app) {
     $userId = $_SESSION['imagouser']['id'];
     unset($_SESSION['imagouser']);
-    DB::delete('users', 'id=%i', $userId);
+    DB::delete('users', 'id=%i', $userId);                  //FIX ME - CHANGE FK CONSTRAINT TO ON DELETE CASCADE
     $app->render('profile_delete_success.html.twig');
 });
 
