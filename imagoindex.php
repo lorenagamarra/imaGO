@@ -223,14 +223,10 @@ $app->get('/photos', function() use ($app) {
         return;
     }
     $userId = $_SESSION['imagouser']['id'];
-    $photoIdList = DB::query("SELECT id FROM photos WHERE userID=%i", $userId);
+    $photoIdList = DB::query("SELECT id FROM photos WHERE userID=%i ORDER BY id DESC", $userId);
     //print_r($photoIdList);
     $app->render('photos.html.twig', array('photoIdList' => $photoIdList));
 });
-
-
-
-
 
 //**********************************
 //*********** PHOTOS ADD ***********
@@ -310,23 +306,17 @@ $app->post('/photos/add', function() use ($app) {
     }
 });
 
-
-
-
-//**********************************
-//********* PHOTO DOWNLOAD *********
+//*******************************************
+//********* PHOTO VIEW AND DOWNLOAD *********
 $app->get('/photoview/:id(/:operation)', function($id, $operation = '') use ($app) {
     if (!$_SESSION['imagouser']) {
         $app->render('forbidden.html.twig');
         return;
     }
-
     $userId = $_SESSION['imagouser']['id'];
     $photo = DB::queryFirstRow("SELECT * FROM photos WHERE userID=%i AND id=%i", $userId, $id);
-    
     $app->response->headers->set('Content-Type', $photo['imageMimeType']);
         echo $photo['imageData'];
-        
     if (!$photo) {
         $app->response()->status(404);
         echo "404 - not found";
@@ -337,8 +327,6 @@ $app->get('/photoview/:id(/:operation)', function($id, $operation = '') use ($ap
     }
 })->conditions(array('operation' => 'download'));
 
-
-
 //**********************************
 //********* PHOTO DELETE ***********
 $app->get('/photoview/:id(/:operation)', function($id, $operation = '') use ($app) {
@@ -346,17 +334,13 @@ $app->get('/photoview/:id(/:operation)', function($id, $operation = '') use ($ap
         $app->render('forbidden.html.twig');
         return;
     }
-
     $userId = $_SESSION['imagouser']['id'];
     $photo = DB::queryFirstRow("SELECT * FROM photos WHERE userID=%i AND id=%i", $userId, $id);
-    //print_r($photo);
     
-    //$app->response->headers->set('Content-Type', $photo['imageMimeType']);
-        //echo $photo['imageData'];
     $app->render('photos_delete.html.twig', array('photo' => $photo));
 })->conditions(array('operation' => 'delete'));
-
-$app->post('/photoview/:id(/:operation)', function($id, $operation = '') use ($app) {
+  
+ $app->post('/photoview/:id(/:operation)', function($id, $operation = '') use ($app) {
     DB::delete('photos', 'id=%i', $id);
     $app->render('photos_delete_success.html.twig');
 })->conditions(array('operation' => 'delete'));

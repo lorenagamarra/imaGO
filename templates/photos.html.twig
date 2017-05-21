@@ -22,14 +22,26 @@
                     </div>
                     <div class="row">
                         {% for p in photoIdList %}
-                            <div class="col-xs-12 col-sm-6 col-lg-3">
-                                <br>
-                                <a href="/photoview/{{p.id}}"><img src="/photoview/{{p.id}}" width="250" class="img-responsive"></a><br>
-                                <a href="/photoview/{{p.id}}/download" class="btn btn-primary">Download</a>
-                                <a href="/photoview/{{p.id}}/delete" class="btn btn-danger">Delete</a>
+                            <div  class="col-xs-12 col-sm-6 col-lg-3">
+                                <div id="container">
+                                    <img src="/photoview/{{p.id}}" width="250" class="image">
+                                    <div class="left">
+                                        <a href="/photoview/{{p.id}}/download"><span class="glyphicon glyphicon-download-alt download" aria-hidden="true"></span></a>
+                                    </div>
+                                    <div class="middle">
+                                        <a href="/photoview/{{p.id}}"><span class="glyphicon glyphicon-eye-open enlarge" aria-hidden="true"></span></a>
+                                    </div>
+                                    <div class="right">
+                                        <a href="/photoview/{{p.id}}/delete"><span class="glyphicon glyphicon-trash delete" aria-hidden="true"></span></a>
+                                    </div>
+                                </div>
+
+                                <!-- <a href="/photoview/{{p.id}}"><img src="/photoview/{{p.id}}" width="250" class="img-responsive"></a><br> 
+                                <a href="/photoview/{{p.id}}/download"><input class="download" type="button" value="Download"></a>
+                                <a href="/photoview/{{p.id}}/delete"><input class="delete" type="button" value="Delete"></a>
+                                -->
                                 <br>
                             </div>
-                            <br>
                         {% endfor %}
                     </div>
                 </div>

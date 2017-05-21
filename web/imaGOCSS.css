@@ -6923,3 +6923,78 @@ body {
     background-color: #5cb85c;
     color: white;
 }
+
+
+
+
+
+
+
+
+#container {
+    position: relative;
+    width: 100%;
+}
+
+.image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.left {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
+.right {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
+#container:hover .image {
+  opacity: 0.3;
+}
+#container:hover .left {
+  opacity: 1;
+}
+#container:hover .middle {
+  opacity: 1;
+}
+#container:hover .right {
+  opacity: 1;
+}
+
+.text {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  padding: 16px 32px;
+}
+
+.glyphicon.glyphicon-download-alt,
+.glyphicon.glyphicon-eye-open,
+.glyphicon.glyphicon-trash{
+    font-size: 40px;
+}
