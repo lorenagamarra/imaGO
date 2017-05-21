@@ -264,8 +264,8 @@ $app->post('/photos/add', function() use ($app) {
         } else {
             $width = $imageInfo[0];
             $height = $imageInfo[1];
-            if ($width > 3000 || $height > 3000) {
-                array_push($errorList, "Image must at most 3000 by 3000 pixels");
+            if ($width > 7000 || $height > 7000) {
+                array_push($errorList, "Image must at most 7000 by 7000 pixels");
             }
 
             // FIXME: opened a security hole here! .. must be forbidden
