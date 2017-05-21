@@ -8,8 +8,8 @@
         <link href="/web/imaGOCSS.css" rel="stylesheet" type="text/css">
         <title>{% block title %}{% endblock %}</title>
         {% block headExtra %}{% endblock %}
-    </head><body>
-        
+    </head>
+    <body>
         <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -29,7 +29,7 @@
             {% block container %}
             {% endblock container %}
         </div>
-        <footer>
+        <footer class="navbar navbar-fixed-bottom">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">

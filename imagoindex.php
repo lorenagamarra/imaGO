@@ -75,22 +75,28 @@ $twig->addGlobal('imagouser', $_SESSION['imagouser']);
 
 
 
+
+
 //**********************************
 //************** HOME **************
-
 $app->get('/', function() use ($app) {
     if (!$_SESSION['imagouser']) {
         $app->render('home.html.twig');
         return;
     }
-    $app->render('photos.html.twig');
+    $userId = $_SESSION['imagouser']['id'];
+    $photoIdList = DB::query("SELECT id FROM photos WHERE userID=%i", $userId);
+    //print_r($photoIdList);
+    $app->render('photos.html.twig', array('photoIdList' => $photoIdList));
 });
+
+
+
 
 
 
 //**********************************
 //***** SIGN UP (registration) *****
-// STATE 1: First show
 $app->get('/signup', function() use ($app) {
     if (!$_SESSION['imagouser']) {
         $app->render('signup.html.twig');
@@ -99,10 +105,8 @@ $app->get('/signup', function() use ($app) {
     $app->render('photos.html.twig');
 });
 
-// Receiving a submission
-$app->post('/signup', function() use ($app) {
 
-    //USE FACEBOOK/GOOGLE ACCOUNT  *********************************************************************
+$app->post('/signup', function() use ($app) {
     // extract variables
     $name = $app->request()->post('name');
     $email = $app->request()->post('email');
@@ -161,7 +165,6 @@ $app->get('/ajax/emailused/:email', function($email) {
 
 
 
-
 //**********************************
 //********* SIGN IN (login) ********
 $app->get('/signin', function() use ($app) {
@@ -173,7 +176,6 @@ $app->get('/signin', function() use ($app) {
 });
 
 $app->post('/signin', function() use ($app) {
-    print_r($_POST);
     $email = $app->request()->post('email');
     $pass = $app->request()->post('pass1');
     // verification    
@@ -197,12 +199,18 @@ $app->post('/signin', function() use ($app) {
 });
 
 
+
+
+
 //**********************************
 //******* SIGN OUT (logout) ********
 $app->get('/signout', function() use ($app) {
     unset($_SESSION['imagouser']);
-    $app->render('home.html.twig');
+    $app->render('signout_success.html.twig');
 });
+
+
+
 
 
 
@@ -216,36 +224,19 @@ $app->get('/photos', function() use ($app) {
     }
     $userId = $_SESSION['imagouser']['id'];
     $photoIdList = DB::query("SELECT id FROM photos WHERE userID=%i", $userId);
-    print_r($photoIdList);
+    //print_r($photoIdList);
     $app->render('photos.html.twig', array('photoIdList' => $photoIdList));
 });
 
-$app->get('/photoview/:id(/:operation)', function($id, $operation = '') use ($app) {
-    if (!$_SESSION['imagouser']) {
-        $app->render('forbidden.html.twig');
-        return;
-    }
-    $userId = $_SESSION['imagouser']['id'];
-    $photo = DB::queryFirstRow("SELECT * FROM photos WHERE userID=%i AND id=%i", $userId, $id);
-    
-    if (!$photo) {
-        $app->response()->status(404);
-        echo "404 - not found";
-    } else {
-        if ($operation == 'download') {
-            $app->response->headers->set('Content-Disposition', 'attachment; somefile.jpg');
-        }
-        $app->response->headers->set('Content-Type', $photo['imageMimeType']);
-        echo $photo['imageData'];
-    }
-})->conditions(array('operation' => 'download'));
+
+
 
 
 //**********************************
 //*********** PHOTOS ADD ***********
 $app->get('/photos/add', function() use ($app) {
     if (!$_SESSION['imagouser']) {
-        $app->render('signin.html.twig');
+        $app->render('forbidden.html.twig');
         return;
     }
     $app->render('photos_add.html.twig');
@@ -256,8 +247,8 @@ $app->post('/photos/add', function() use ($app) {
         $app->render('signin.html.twig');
         return;
     }
-    print_r($_POST);
-    print_r($_FILES);
+    //print_r($_POST);
+    //print_r($_FILES);
     // extract variables
     $image = $_FILES['image'];
     /* Process image with GD library */
@@ -319,6 +310,145 @@ $app->post('/photos/add', function() use ($app) {
     }
 });
 
+
+
+
+//**********************************
+//********* PHOTO DOWNLOAD *********
+$app->get('/photoview/:id(/:operation)', function($id, $operation = '') use ($app) {
+    if (!$_SESSION['imagouser']) {
+        $app->render('forbidden.html.twig');
+        return;
+    }
+
+    $userId = $_SESSION['imagouser']['id'];
+    $photo = DB::queryFirstRow("SELECT * FROM photos WHERE userID=%i AND id=%i", $userId, $id);
+    
+    $app->response->headers->set('Content-Type', $photo['imageMimeType']);
+        echo $photo['imageData'];
+        
+    if (!$photo) {
+        $app->response()->status(404);
+        echo "404 - not found";
+    } else {
+        if ($operation == 'download') {
+            $app->response->headers->set('Content-Disposition', 'attachment; somefile.jpg');
+        }
+    }
+})->conditions(array('operation' => 'download'));
+
+
+
+//**********************************
+//********* PHOTO DELETE ***********
+$app->get('/photoview/:id(/:operation)', function($id, $operation = '') use ($app) {
+    if (!$_SESSION['imagouser']) {
+        $app->render('forbidden.html.twig');
+        return;
+    }
+
+    $userId = $_SESSION['imagouser']['id'];
+    $photo = DB::queryFirstRow("SELECT * FROM photos WHERE userID=%i AND id=%i", $userId, $id);
+    //print_r($photo);
+    
+    //$app->response->headers->set('Content-Type', $photo['imageMimeType']);
+        //echo $photo['imageData'];
+    $app->render('photos_delete.html.twig', array('photo' => $photo));
+})->conditions(array('operation' => 'delete'));
+
+$app->post('/photoview/:id(/:operation)', function($id, $operation = '') use ($app) {
+    DB::delete('photos', 'id=%i', $id);
+    $app->render('photos_delete_success.html.twig');
+})->conditions(array('operation' => 'delete'));
+
+
+
+
+//**********************************
+//******* PROFILE (UPDATE) *********
+$app->get('/profile', function() use ($app) {
+    if (!$_SESSION['imagouser']) {
+        $app->render('forbidden.html.twig');
+        return;
+    }
+    $app->render('profile.html.twig');
+});
+
+$app->post('/profile', function() use ($app) {
+    
+    $userId = $_SESSION['imagouser']['id'];
+
+    // extract variables
+    $name = $app->request()->post('name');
+    $email = $app->request()->post('email');
+    $pass1 = $app->request()->post('pass1');
+    $pass2 = $app->request()->post('pass2');
+    // list of values to retain after a failed submission
+    $valueList = array('email' => $email, 'name' => $name);
+    // check for errors and collect error messages
+    $errorList = array();
+
+    if (strlen($name) < 6 || strlen($name) > 50) {
+        array_push($errorList, "Name must be between 6-50 characters long");
+    }
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
+        array_push($errorList, "Email is invalid");
+    } else {
+        $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
+        if ($user) {
+            array_push($errorList, "Email already in use");
+        }
+    }
+    if ($pass1 != $pass2) {
+        array_push($errorList, "Passwords do not match");
+    } else {
+        if (strlen($pass1) < 6) {
+            array_push($errorList, "Password too short, must be 6 characters or longer");
+        }
+        if (preg_match('/[A-Z]/', $pass1) != 1 || preg_match('/[a-z]/', $pass1) != 1 || preg_match('/[0-9]/', $pass1) != 1) {
+            array_push($errorList, "Password must contain at least one lowercase, one uppercase letter and a digit");
+        }
+    }
+    //
+    if ($errorList) {
+        $app->render('profile.html.twig', array(
+            'errorList' => $errorList,
+            'v' => $valueList
+        ));
+    } else {
+        DB::update('users', array(
+            'name' => $name,
+            'email' => $email,
+            'password' => $pass1
+                ), "id=%i", $userId);
+
+        unset($_SESSION['imagouser']);
+        $app->render('profile_update_success.html.twig');
+    }
+});
+
+
+
+//**********************************
+//******* PROFILE (DELETE) *********
+$app->get('/profile/delete', function() use ($app) {
+    if (!$_SESSION['imagouser']) {
+        $app->render('forbidden.html.twig');
+        return;
+    }
+    $userId = $_SESSION['imagouser']['id'];
+    $profile = DB::queryFirstRow('SELECT * FROM users WHERE id=%i', $userId);
+    $app->render('profile_delete.html.twig', array(
+        'p' => $profile
+    ));
+});
+
+$app->post('/profile/delete', function() use ($app) {
+    $userId = $_SESSION['imagouser']['id'];
+    unset($_SESSION['imagouser']);
+    DB::delete('users', 'id=%i', $userId);
+    $app->render('profile_delete_success.html.twig');
+});
 
 $app->run();
 

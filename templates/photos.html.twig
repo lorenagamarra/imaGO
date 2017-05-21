@@ -2,11 +2,11 @@
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
-            <li class="active"> <a href="/profile"><b>{{ imagouser.name }} | Profile</b></a> </li>
-            <li> <a href="/albums">Albums</a> </li>
-            <li> <a href="/photos/add">Add Photo</a> </li>
-            <li> <a href="/deletephoto">Delete Photo</a> </li>
-            <li> <a href="/signout">Sign Out</a> </li>
+            <li class="active"><a href="/profile"><b>{{ imagouser.name }} | Profile</b></a></li>
+            <li><a href="/photos/add">Add Photo</a></li>
+            <li><a href="/albums">Albums</a></li>
+            <li><a href="/albums/add">Add Album</a></li>
+            <li><a href="/signout">Sign Out</a></li>
         </ul>
     </div>
 {% endblock navbarSign %}
@@ -24,8 +24,8 @@
                         {% for p in photoIdList %}
                             <div class="col-md-3">
                                 <a href="/photoview/{{p.id}}"><img src="/photoview/{{p.id}}" width="250" class="img-responsive"></a>
-                                <a href="/photoview/{{p.id}}">view alone</a>
-                                <a href="/photoview/{{p.id}}/download">download</a>
+                                <a href="/photoview/{{p.id}}/download">Download</a>
+                                <a href="/photoview/{{p.id}}/delete">Delete</a>
                             </div>
                         {% endfor %}
                     </div>

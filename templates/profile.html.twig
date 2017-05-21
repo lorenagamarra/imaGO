@@ -1,4 +1,4 @@
-{% extends "master.html.twig" %}
+{% extends "master2.html.twig" %}
 
 {% block title %}imaGO - Profile{% endblock %}
 
@@ -31,24 +31,11 @@
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
-<li class="active">
-                <a href="/profile"><b>{{ imagouser.name }} | Profile</b></a>
-            </li>
-            <li>
-                <input id="upload" type="file" name="image" style="display: none;" multiple>
-            </li>
-            <li>
-                <a href="" id="upload_link">Add photo</a>​
-                {% if v.imagePath %}
-                    <img width="50" src="/{{v.imagePath}}">
-                {% endif %}
-            </li>
-            <li>
-                <a href="/deletephoto">Delete Photo</a>
-            </li>
-            <li>
-                <a href="/signout">Sign Out</a>
-            </li>
+            <li class="active"><a href="/profile"><b>{{ imagouser.name }} | Profile</b></a></li>
+            <li><a href="/photos/add">Add Photo</a></li>
+            <li><a href="/albums">Albums</a></li>
+            <li><a href="/albums/add">Add Album</a></li>
+            <li><a href="/signout">Sign Out</a></li>
         </ul>
     </div>
 {% endblock navbarSign %}
@@ -74,11 +61,10 @@
                     </div>
                     <div class="form-group has-feedback" >
                         <input class="form-control input-lg" type="email" id="email" name="email" placeholder="Email" autofocus value="{{v.email}}">
-                        <span id="emailInUse">Email already registred</span>
-                        <span class="ion-at form-control-feedback"></span>
+                        <span id="emailInUse" class="ion-at form-control-feedback">Email already registred</span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input class="form-control input-lg" type="password" name="pass1" placeholder="Password" autofocus value="{{v.password}}>
+                        <input class="form-control input-lg" type="password" name="pass1" placeholder="Password" autofocus>
                         <span class="ion-key form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
@@ -86,7 +72,7 @@
                         <span class="ion-key form-control-feedback"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-block btn-primary">Update</button>
+                    <button type="submit" class="btn btn-block btn-primary">Update Profile</button>
                     <br/>
                 </form>
 
@@ -94,7 +80,7 @@
                     <hr>
                 </div>
 
-                <a href="/profile/delete">Delete profile</a>
+                <a href="/profile/delete" class="btn btn-danger" style="margin: 0 auto">Delete profile</a>
             </div>
         </div>
     </div>
