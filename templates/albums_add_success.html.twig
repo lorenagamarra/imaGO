@@ -1,0 +1,22 @@
+{% extends "master2.html.twig" %}
+
+{% block title %}Album created with success{% endblock title %}
+
+{% block headExtra %}
+    <meta http-equiv="refresh" content="5;url=/albums" />
+{% endblock headExtra %}
+
+{% block container %}
+    <br><br><br><br><br><br>
+    <div class="container">
+        <div class="center-form panel">
+            <div class="panel-body">
+                <h4 class="text-center"><i class="ion-log-in"></i>Album created with success</h4>
+                <br/><br/>
+                <p class="text-center text-muted">
+                    <small>Click <a href="/albums">here</a> to see your albums or you will be redirected in 5 seconds.</small>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock container %}

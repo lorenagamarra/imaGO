@@ -316,7 +316,7 @@ $app->get('/photoview/:id(/:operation)', function($id, $operation = '') use ($ap
     $userId = $_SESSION['imagouser']['id'];
     $photo = DB::queryFirstRow("SELECT * FROM photos WHERE userID=%i AND id=%i", $userId, $id);
     $app->response->headers->set('Content-Type', $photo['imageMimeType']);
-        echo $photo['imageData'];
+    echo $photo['imageData'];
     if (!$photo) {
         $app->response()->status(404);
         echo "404 - not found";
@@ -336,11 +336,11 @@ $app->get('/photoview/:id(/:operation)', function($id, $operation = '') use ($ap
     }
     $userId = $_SESSION['imagouser']['id'];
     $photo = DB::queryFirstRow("SELECT * FROM photos WHERE userID=%i AND id=%i", $userId, $id);
-    
+
     $app->render('photos_delete.html.twig', array('photo' => $photo));
 })->conditions(array('operation' => 'delete'));
-  
- $app->post('/photoview/:id(/:operation)', function($id, $operation = '') use ($app) {
+
+$app->post('/photoview/:id(/:operation)', function($id, $operation = '') use ($app) {
     DB::delete('photos', 'id=%i', $id);
     $app->render('photos_delete_success.html.twig');
 })->conditions(array('operation' => 'delete'));
@@ -359,7 +359,7 @@ $app->get('/profile', function() use ($app) {
 });
 
 $app->post('/profile', function() use ($app) {
-    
+
     $userId = $_SESSION['imagouser']['id'];
 
     // extract variables
@@ -433,6 +433,167 @@ $app->post('/profile/delete', function() use ($app) {
     DB::delete('users', 'id=%i', $userId);                  //FIX ME - CHANGE FK CONSTRAINT TO ON DELETE CASCADE
     $app->render('profile_delete_success.html.twig');
 });
+
+
+
+
+
+//**********************************
+//************* ALBUMS *************
+
+$app->get('/albums', function() use ($app) {
+    if (!$_SESSION['imagouser']) {
+        $app->render('forbidden.html.twig');
+        return;
+    }
+    $userId = $_SESSION['imagouser']['id'];
+    $albumIdList = DB::query("SELECT id FROM albums WHERE userID=%i ORDER BY id DESC", $userId);
+    $photosOnAlbumIdList = DB::query("SELECT albumID FROM photosonalbums WHERE userID=%i AND albumID=%i", $userId, $id);
+    //print_r($photoIdList);
+    $app->render('albums.html.twig', array('albumIdList' => $albumIdList, 'photosOnAlbumIdList'=>$photosOnAlbumIdList));
+});
+
+//**********************************
+//*********** ALBUMS ADD ***********
+$app->get('/albums/add', function() use ($app) {
+    if (!$_SESSION['imagouser']) {
+        $app->render('forbidden.html.twig');
+        return;
+    }
+    $app->render('albums_add.html.twig');
+});
+
+$app->post('/albums/add', function() use ($app) {
+    if (!$_SESSION['imagouser']) {
+        $app->render('signin.html.twig');
+        return;
+    }
+    //print_r($_POST);
+    //print_r($_FILES);
+    // extract variables
+    $albumTitle = $app->request()->post('albumTitle');
+    $albumDate = $app->request()->post('albumDate');
+    $valueList = array('albumTitle' => $albumTitle, 'albumDate' => $albumDate);
+    // verify inputs
+    $errorList = array();
+    if (strlen($albumTitle) < 2 || strlen($albumTitle) > 100) {
+        array_push($errorList, "The title of this album must be between 2 and 100 characters");
+    }
+    // TODO: check if date looks like it should / parses as a date
+    if (empty($albumDate)) {
+        array_push($errorList, "You must select a valid album date");
+    }
+    // receive data and insert
+    if (!$errorList) {
+        $userID = $_SESSION['imagouser']['id'];
+        DB::insert('albums', array(
+            'userID' => $ownerId,
+            'title' => $albumTitle,
+            'date' => $albumDate
+        ));
+        $app->render('albums_add_success.html.twig');
+    } else {
+        // TODO: keep values entered on failed submission
+        $app->render('albums_add.html.twig', array(
+            'v' => $valueList
+        ));
+    }
+});
+
+//*******************************************
+//********* ALBUMS VIEW *********
+$app->get('/albumlistview/:id(/:operation)', function($id, $operation = '') use ($app) {
+    if (!$_SESSION['imagouser']) {
+        $app->render('forbidden.html.twig');
+        return;
+    }
+    $userId = $_SESSION['imagouser']['id'];
+    $album = DB::queryFirstRow("SELECT * FROM albums WHERE userID=%i AND id=%i", $userId, $id);
+    $photosOnAlbum = DB::queryFirstRow("SELECT * FROM photosonalbums WHERE userID=%i AND albumID=%i", $userId, $id);
+    if (!$photosOnAlbum) {
+        //Como fazer para mostrar a imagem <img src="/media/placeholder.png" width="250"> quando o album ainda esta vazio?
+        $app->response->headers->set('Content-Type', $album['imageMimeType']);
+        echo $album['imageData'];
+    } else {
+        if ($operation == 'edit') {
+            $app->render('albums_edit.html.twig', array('photosOnAlbum' => $photosOnAlbum));
+        }
+    }
+})->conditions(array('operation' => 'edit'));
+
+//**********************************
+//********* ALBUMS DELETE ***********
+$app->get('/albumlistview/:id(/:operation)', function($id, $operation = '') use ($app) {
+    if (!$_SESSION['imagouser']) {
+        $app->render('forbidden.html.twig');
+        return;
+    }
+    $userId = $_SESSION['imagouser']['id'];
+    $album = DB::queryFirstRow("SELECT * FROM albums WHERE userID=%i AND id=%i", $userId, $id);
+    $app->render('albums_delete.html.twig', array('album' => $album));
+})->conditions(array('operation' => 'delete'));
+
+$app->post('/albumlistview/:id(/:operation)', function($id, $operation = '') use ($app) {
+    DB::delete('albums', 'id=%i', $id);
+    $app->render('albums_delete_success.html.twig');
+})->conditions(array('operation' => 'delete'));
+
+//****************************************************
+//********* ALBUMS - ADD PHOTO TO ALBUM ***********
+$app->get('/albums_edit/:id(/:operation)', function($id, $operation = '') use ($app) {
+    if (!$_SESSION['imagouser']) {
+        $app->render('forbidden.html.twig');
+        return;
+    }
+    $userId = $_SESSION['imagouser']['id'];
+    $album = DB::queryFirstRow("SELECT * FROM albums WHERE userID=%i AND id=%i", $userId, $id);
+    $photosOnAlbum = DB::queryFirstRow("SELECT * FROM photosonalbums WHERE userID=%i AND albumID=%i", $userId, $id);
+    $app->render('albums_add_photo.html.twig', array('photosOnAlbum' => $photosOnAlbum));
+})->conditions(array('operation' => 'add'));
+
+$app->post('/albumlistview/:id(/:operation)', function($id, $operation = '') use ($app) {
+    DB::delete('albums', 'id=%i', $id);
+    $app->render('albums_add_success.html.twig');
+})->conditions(array('operation' => 'delete'));
+
+//****************************************************
+//********* ALBUMS REMOVE PHOTO FROM ALBUMS ***********
+$app->get('/albumlistview/:id(/:operation)', function($id, $operation = '') use ($app) {
+    if (!$_SESSION['imagouser']) {
+        $app->render('forbidden.html.twig');
+        return;
+    }
+    $userId = $_SESSION['imagouser']['id'];
+    $album = DB::queryFirstRow("SELECT * FROM albums WHERE userID=%i AND id=%i", $userId, $id);
+    $photosOnAlbum = DB::queryFirstRow("SELECT * FROM photosonalbums WHERE userID=%i AND id=%i", $userId, $id);
+    $app->render('albums_delete.html.twig', array('album' => $album));
+})->conditions(array('operation' => 'delete'));
+
+$app->post('/albumlistview/:id(/:operation)', function($id, $operation = '') use ($app) {
+    DB::delete('albums', 'id=%i', $id);
+    $app->render('albums_delete_success.html.twig');
+})->conditions(array('operation' => 'delete'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 $app->run();
 

@@ -2,60 +2,47 @@
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
-            <li class="active">
-                <p>Hi </p><a href="#">USER</a>
-            </li>
-            <li>
-                <a href="/addalbum">Add Album</a>
-            </li>
-           
-            <li>
-                <a href="/profile">Profile</a>
-            </li>
-            <li>
-                <a href="/signout">Sign Out</a>
-            </li>
+            <li class="active"><a href="/profile"><b>{{ imagouser.name }} | Profile</b></a></li>
+            <li><a href="/albums/add">Add Album</a></li>
+            <li><a href="/photos">Photos</a></li>
+            <li><a href="/signout">Sign Out</a></li>
         </ul>
     </div>
 {% endblock navbarSign %}
-{% block content %}
+{% block container %}
     <div class="row">
         <div class="col-md-12">
-            <h1 class="text-center">My Albums</h1>
+            <div class="section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="text-center">My Albums</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {% for a in albumIdList %}
+                            <!-- Como fazer para mostrar a imagem <img src="/media/placeholder.png" width="250"> quando o album ainda esta vazio? -->
+                            
+                            <div  class="col-xs-12 col-sm-6 col-lg-3">
+                                <div id="container">
+                                    <img src="/photoview/{{p.id}}" width="250" class="image">
+                                    <div class="left">
+                                        <a href="/photoview/{{p.id}}/edit"><span class="glyphicon glyphicon-download-alt download" aria-hidden="true"></span></a>
+                                    </div>
+                                    <div class="middle">
+                                        <a href="/photoview/{{p.id}}"><span class="glyphicon glyphicon-eye-open enlarge" aria-hidden="true"></span></a>
+                                    </div>
+                                    <div class="right">
+                                        <a href="/photoview/{{p.id}}/delete"><span class="glyphicon glyphicon-trash delete" aria-hidden="true"></span></a>
+                                    </div>
+                                <br>
+                                </div>
+                                <br>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <a><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-            <h3>A title</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisici elit,&nbsp;</p>
-        </div>
-        <div class="col-md-4">
-            <a><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-            <h2>A title</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisici elit,&nbsp;</p>
-        </div>
-        <div class="col-md-4">
-            <a><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-            <h2>A ttile</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisici elit,&nbsp;</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <a><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-            <h3>A title</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisici elit,&nbsp;</p>
-        </div>
-        <div class="col-md-4">
-            <a><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-            <h3>A title</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisici elit,&nbsp;</p>
-        </div>
-        <div class="col-md-4">
-            <a><img src="http://pingendo.github.io/pingendo-bootstrap/assets/placeholder.png" class="img-responsive"></a>
-            <h2>A title</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisici elit,&nbsp;</p>
-        </div>
-    </div>
-{% endblock content %}
+{% endblock container %}
