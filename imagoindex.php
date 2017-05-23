@@ -678,6 +678,112 @@ $app->get('/albums/:id/list', function($id) use ($app) {
     $app->render('albums_list.html.twig', array('album' => $album, 'photoIdList' => $photoIdList));
 });
 
+//****************************************************
+//********* PASSWOR RESET *********** 
+function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
+$app->map('/passreset', function () use ($app, $log) {
+    // Alternative to cron-scheduled cleanup
+    if (rand(1, 1000) == 111) {
+        // TODO: do the cleanup 1 in 1000 accessed to /passreset URL
+    }
+    if ($app->request()->isGet()) {
+        $app->render('passreset.html.twig');
+    } else {
+        $email = $app->request()->post('email');
+        $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
+        if ($user) {
+            $app->render('passreset_success.html.twig');
+            $secretToken = generateRandomString(50);
+            // VERSION 2: insert-update TODO
+            DB::insertUpdate('passresets', array(
+                'userID' => $user['id'],
+                'secretToken' => $secretToken,
+                'expiryDateTime' => date("Y-m-d H:i:s", strtotime("+5 minutes"))
+            ));
+            // email user
+            $url = 'http://' . $_SERVER['SERVER_NAME'] . '/passreset/' . $secretToken;
+            $html = $app->view()->render('email_passreset.html.twig', array(
+                'name' => $user['name'],
+                'url' => $url
+            ));
+            $headers = "MIME-Version: 1.0\r\n";
+            $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+            $headers .= "From: Noreply <noreply@imago.ipd9.info>\r\n";
+            $headers .= "To: " . htmlentities($user['name']) . " <" . $email . ">\r\n";
+
+            mail($email, "Password reset from imaGO", $html, $headers);
+            //$log->info("Password reset for $email email sent");
+        } else {
+            $app->render('passreset.html.twig', array('error' => TRUE));
+        }
+    }
+})->via('GET', 'POST');
+
+$app->map('/passreset/:secretToken', function($secretToken) use ($app) {
+    $row = DB::queryFirstRow("SELECT * FROM passresets WHERE secretToken=%s", $secretToken);
+    if (!$row) {
+        $app->render('passreset_notfound_expired.html.twig');
+        return;
+    }
+    if (strtotime($row['expiryDateTime']) < time()) {
+        $app->render('passreset_notfound_expired.html.twig');
+        return;
+    }
+    //
+    if ($app->request()->isGet()) {
+        $app->render('passreset_form.html.twig');
+    } else {
+        $pass1 = $app->request()->post('pass1');
+        $pass2 = $app->request()->post('pass2');
+        // TODO: verify password quality and that pass1 matches pass2
+        $errorList = array();
+        if ($pass1 != $pass2) {
+            array_push($errorList, "Passwords do not match");
+        } else {
+            if (strlen($pass1) < 6) {
+                array_push($errorList, "Password too short, must be 6 characters or longer");
+            }
+            if (preg_match('/[A-Z]/', $pass1) != 1 || preg_match('/[a-z]/', $pass1) != 1 || preg_match('/[0-9]/', $pass1) != 1) {
+                array_push($errorList, "Password must contain at least one lowercase, one uppercase letter and a digit");
+            }
+        }
+        //
+        if ($errorList) {
+            $app->render('passreset_form.html.twig', array(
+                'errorList' => $errorList
+            ));
+        } else {
+            // success - reset the password
+            DB::update('users', array(
+                //'password' => password_hash($pass1, CRYPT_BLOWFISH)
+                'password' => $pass1
+                    ), "id=%d", $row['userID']);
+            DB::delete('passresets', 'secretToken=%s', $secretToken);
+            $app->render('passreset_form_success.html.twig');
+            //$log->info("Password reset completed for " . $row['email'] . " uid=" . $row['userID']);
+        }
+    }
+})->via('GET', 'POST');
+
+// returns TRUE if password is strong enough,
+// otherwise returns string describing the problem
+function verifyPassword($pass1) {
+    if (!preg_match('/[0-9;\'".,<>`~|!@#$%^&*()_+=-]/', $pass1) || (!preg_match('/[a-z]/', $pass1)) || (!preg_match('/[A-Z]/', $pass1)) || (strlen($pass1) < 8)) {
+        return "Password must be at least 8 characters " .
+                "long, contain at least one upper case, one lower case, " .
+                " one digit or special character";
+    }
+    return TRUE;
+}
 
 
 

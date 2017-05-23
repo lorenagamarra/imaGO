@@ -1,0 +1,29 @@
+{% extends "master.html.twig" %}
+
+{% block title %}Password reset{% endblock %}
+
+{% block navbarSign %}
+    <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="active">
+                <a href="/signin">Sign In</a>
+            </li>
+            <li>
+                <a href="/signup">Sign Up</a>
+            </li>
+        </ul>
+    </div>
+{% endblock navbarSign %}
+
+{% block container %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1>Password reset - email sent</h1>
+                <p>Email with password reset code has been sent.
+                    Please allow the email a few minutes to arrive.
+                    <a href="/">Click here to continue</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock container %}

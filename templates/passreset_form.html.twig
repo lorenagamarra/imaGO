@@ -1,0 +1,41 @@
+{% extends "master.html.twig" %}
+
+{% block title %}Password reset{% endblock %}
+
+{% block navbarSign %}
+    <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="active">
+                <a href="/signin">Sign In</a>
+            </li>
+            <li>
+                <a href="/signup">Sign Up</a>
+            </li>
+        </ul>
+    </div>
+{% endblock navbarSign %}
+
+{% block container %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1>Password reset</h1>
+                {% if errorList %}
+                    <ul>
+                        {% for error in errorList %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                
+                <p>Enter your new password below.</p>
+
+                <form method="post">
+                    Password: <input type="password" name="pass1"><br>
+                    Password (repeated) <input type="password" name="pass2"><br>
+                    <input type="submit" value="Reset password">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock container %}
