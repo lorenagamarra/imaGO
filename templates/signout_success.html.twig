@@ -6,6 +6,19 @@
     <meta http-equiv="refresh" content="2.5;url=/" />
 {% endblock %}
 
+{% block navbarSign %}
+    <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="active">
+                <a href="/signin">Sign In</a>
+            </li>
+            <li>
+                <a href="/signup">Sign Up</a>
+            </li>
+        </ul>
+    </div>
+{% endblock navbarSign %}
+
 {% block container %}
     <div class="container">
         <div class="center-form panel">

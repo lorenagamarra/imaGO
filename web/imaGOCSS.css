@@ -4140,6 +4140,11 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .navbar-fixed-bottom .navbar-collapse {
     max-height: 200px;
   }
+  
+  .navbar-fixed-bottom {
+      
+  }
+  
 }
 .container > .navbar-header,
 .container-fluid > .navbar-header,
@@ -6955,6 +6960,16 @@ body {
   -ms-transform: translate(-50%, -50%)
 }
 
+.leftbottom {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 80%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
+
 .middle {
   transition: .5s ease;
   opacity: 0;
@@ -6964,6 +6979,17 @@ body {
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%)
 }
+
+.rightbottom {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 80%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
+
 .right {
   transition: .5s ease;
   opacity: 0;
@@ -6973,6 +6999,7 @@ body {
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%)
 }
+
 #container:hover .image {
   opacity: 0.3;
 }
@@ -6985,6 +7012,12 @@ body {
 #container:hover .right {
   opacity: 1;
 }
+#container:hover .leftbottom {
+  opacity: 1;
+}
+#container:hover .rightbottom {
+  opacity: 1;
+}
 
 .text {
   background-color: #4CAF50;
@@ -6993,6 +7026,9 @@ body {
   padding: 16px 32px;
 }
 
+.glyphicon-pencil,
+.glyphicon-plus,
+.glyphicon-minus,
 .glyphicon.glyphicon-download-alt,
 .glyphicon.glyphicon-eye-open,
 .glyphicon.glyphicon-trash{

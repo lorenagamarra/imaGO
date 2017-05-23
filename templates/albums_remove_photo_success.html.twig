@@ -1,6 +1,6 @@
 {% extends "master2.html.twig" %}
 
-{% block title %}Album created with success{% endblock title %}
+{% block title %}Photo Removed from Album successfully{% endblock title %}
 
 {% block headExtra %}
     <meta http-equiv="refresh" content="5;url=/albums" />
@@ -24,10 +24,15 @@
     <div class="container">
         <div class="center-form panel">
             <div class="panel-body">
-                <h4 class="text-center"><i class="ion-log-in"></i>Album created with success</h4>
+                <h4 class="text-center"><i class="ion-log-in"></i>Photo Removed successfully from album : {{album.title}}</h4>
+                <br/><br/>
+                <div class="col-md-3">
+                    <img src="/photoview/{{photo.id}}" width="250" class="img-responsive">
+                </div>
                 <br/><br/>
                 <p class="text-center text-muted">
-                    <small>Click <a href="/albums">here</a> to see your albums or you will be redirected in 5 seconds.</small>
+                    <small>Click to <a href="/albums/{{album.id}}/removephoto">remove</a> more photos in your album {{album.title}}<br>
+                        or come back to see your <a href="/albums">albums</a>. You will be redirected in 5 seconds.</small>
                 </p>
             </div>
         </div>

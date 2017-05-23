@@ -1,6 +1,6 @@
 {% extends "master2.html.twig" %}
 
-{% block title %}imaGO - Photos{% endblock %}
+{% block title %}imaGO - Add Photos on Album{% endblock %}
 
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
@@ -14,34 +14,43 @@
         </ul>
     </div>
 {% endblock navbarSign %}
-
 {% block container %}
     <div class="row">
         <div class="col-md-12">
             <div class="section">
                 <div class="container">
+                    
+                    {% if errorList %}
+                        <ul class="errorList">
+                            {% for error in errorList %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    
                     <div class="row">
                         <div class="col-md-12">
-                            <h1 class="text-center">My Photos</h1>
+                            <h1 class="text-center">Add Photos on Album: {{album.title}}</h1>
                         </div>
                     </div>
+                    <br>
+                    <h3>Your photo list:</h3>
+                    <br>
                     <div class="row">
                         {% for p in photoIdList %}
                             <div  class="col-xs-12 col-sm-6 col-lg-3">
                                 <div id="container">
                                     <img src="/photoview/{{p.id}}" width="250" class="image">
-                                    <div class="left">
-                                        <a href="/photoview/{{p.id}}/download"><span class="glyphicon glyphicon-download-alt download" aria-hidden="true"></span></a>
-                                    </div>
                                     <div class="middle">
                                         <a href="/photoview/{{p.id}}"><span class="glyphicon glyphicon-eye-open enlarge" aria-hidden="true"></span></a>
                                     </div>
-                                    <div class="right">
-                                        <a href="/photoview/{{p.id}}/delete"><span class="glyphicon glyphicon-trash delete" aria-hidden="true"></span></a>
+                                    <div>
+                                        <a href="/albums/{{album.id}}/addphoto/{{p.id}}"><span class="glyphicon glyphicon-plus rightbottom" aria-hidden="true"></span></a>
                                     </div>
                                 </div>
                                 <br>
                             </div>
+                            <br>
                         {% endfor %}
                     </div>
                 </div>

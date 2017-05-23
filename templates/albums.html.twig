@@ -3,8 +3,10 @@
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
             <li class="active"><a href="/profile"><b>{{ imagouser.name }} | Profile</b></a></li>
-            <li><a href="/albums/add">Add Album</a></li>
             <li><a href="/photos">Photos</a></li>
+            <li><a href="/photos/add">Add Photo</a></li>
+            <li><a href="/albums">Albums</a></li>
+            <li><a href="/albums/add">Add Album</a></li>
             <li><a href="/signout">Sign Out</a></li>
         </ul>
     </div>
@@ -20,24 +22,28 @@
                         </div>
                     </div>
                     <div class="row">
-                        {% for a in albumIdList %}
-                            <!-- Como fazer para mostrar a imagem <img src="/media/placeholder.png" width="250"> quando o album ainda esta vazio? -->
-                            
+                        {% for a in albumList %}
                             <div  class="col-xs-12 col-sm-6 col-lg-3">
                                 <div id="container">
-                                    <img src="/photoview/{{p.id}}" width="250" class="image">
-                                    <div class="left">
-                                        <a href="/photoview/{{p.id}}/edit"><span class="glyphicon glyphicon-download-alt download" aria-hidden="true"></span></a>
+                                    <h3>{{a.title}}</h3>
+                                    <h6>{{a.date}}</h6>
+                                    <img src="/media/placeholder.png" width="250" class="image">
+                                    <div class="row">
+                                        <div class="left">
+                                            <a href="/albums/{{a.id}}/edit"><span class="glyphicon glyphicon-pencil " aria-hidden="true"></span></a>
+                                        </div>
+                                        <div class="middle">
+                                            <a href="/albums/{{a.id}}/list"><span class="glyphicon glyphicon-eye-open enlarge" aria-hidden="true"></span></a>
+                                        </div>
+                                        <div class="right">
+                                            <a href="/albums/{{a.id}}/delete"><span class="glyphicon glyphicon-trash delete" aria-hidden="true"></span></a>
+                                        </div>
+                                        <div>
+                                            <a href="/albums/{{a.id}}/removephoto"><span class="glyphicon glyphicon-minus leftbottom" aria-hidden="true"></span></a>
+                                            <a href="/albums/{{a.id}}/addphoto"><span class="glyphicon glyphicon-plus rightbottom" aria-hidden="true"></span></a>
+                                        </div>
                                     </div>
-                                    <div class="middle">
-                                        <a href="/photoview/{{p.id}}"><span class="glyphicon glyphicon-eye-open enlarge" aria-hidden="true"></span></a>
-                                    </div>
-                                    <div class="right">
-                                        <a href="/photoview/{{p.id}}/delete"><span class="glyphicon glyphicon-trash delete" aria-hidden="true"></span></a>
-                                    </div>
-                                <br>
                                 </div>
-                                <br>
                             </div>
                         {% endfor %}
                     </div>
@@ -45,4 +51,5 @@
             </div>
         </div>
     </div>
+    <br>
 {% endblock container %}
