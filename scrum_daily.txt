@@ -113,3 +113,29 @@ WILL DO IN THE NEXT 24 HOURS
 WHERE I NEED HELP IS...
 	1. Photos list, photos selection
 -----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+*** May 23 Nedis ***
+DID SINCE LAST SCRUM:
+        1. Edit profile, Delete profile
+        2. Create edit delete album
+        3. Add photo on album, remove photo from album
+        4. See photos into albums
+WILL DO IN THE NEXT 24 HOURS
+        1. Show photo for each album in album list
+        2. Order photo into album
+WHERE I NEED HELP IS...
+        1. How show one photo for each album in my albums
+        2. Find tutorial ordering photos
+
+*** May 23 Lorena ***
+WHAT DID I DO / DID NOT DO SINCE LAST SCRUM:
+        1. Finished Photos (photos list)
+        2. Started UI for albums and sub-urls
+        3. Finished Email with forbidden password
+        4. Started Signin with Facebook account
+WILL DO IN THE NEXT 24 HOURS
+	1. Still work with Facebook signin
+       
+WHERE I NEED HELP IS...
+	1. Integration between Facebook login and our own login
+-----------------------------------------------------------------------------------------------------------------------------
