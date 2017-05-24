@@ -175,7 +175,7 @@ $app->get('/signin', function() use ($app) {
     $app->render('photos.html.twig');
 });
 
-$app->post('/signin', function() use ($app) {
+$app->post('/signin', function() use ($app, $log) {
     $email = $app->request()->post('email');
     $pass = $app->request()->post('pass1');
     // verification    
@@ -194,6 +194,7 @@ $app->post('/signin', function() use ($app) {
     } else {
         unset($user['password']);
         $_SESSION['imagouser'] = $user;
+        $log->debug("User signed in with id=" . $user['id']);
         $app->render('signin_success.html.twig');
     }
 });

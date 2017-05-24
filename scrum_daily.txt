@@ -139,3 +139,21 @@ WILL DO IN THE NEXT 24 HOURS
 WHERE I NEED HELP IS...
 	1. Integration between Facebook login and our own login
 -----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+*** May 24 Nedis ***
+    For personal reasons he will be absent
+
+*** May 23 Lorena ***
+WHAT DID I DO / DID NOT DO SINCE LAST SCRUM:
+        1. Still work with Facebook signin
+WILL DO IN THE NEXT 24 HOURS
+	1. Still work with Facebook signin
+        2. Add password_hash($pass1, CRYPT_BLOWFISH) and password_verify
+        3. Fix log problem
+        4. Start Drop and Drag
+        5. Start Album cover (flag)
+WHERE I NEED HELP IS...
+	1. Integration between Facebook login and our own login
+        2. How to associate Drop and Drag (photo position on screen) with DB?
+        3. DB, flag for cover album
+-----------------------------------------------------------------------------------------------------------------------------
