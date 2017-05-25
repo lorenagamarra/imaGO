@@ -229,9 +229,9 @@ $app->post('/profile', function() use ($app, $log) {
     if (filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
         array_push($errorList, "Email is invalid");
     } else {
-        $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
+        $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s AND id!=%i", $email, $userId);
         if ($user) {
-            array_push($errorList, "Email already in use");
+            array_push($errorList, "Email already in use by another account");
         }
     }
     if ($pass1 != $pass2) {
