@@ -2,6 +2,41 @@
 
 {% block title %}imaGO - Photos{% endblock %}
 
+{% block headExtra %}
+
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#sortable").sortable();
+            $("#sortable").disableSelection();
+        });
+
+        $(document).ready(function () {
+            $('ul').sortable({
+                axis: 'y',
+                stop: function (event, ui) {
+                    var data = $(this).sortable('serialize');
+                    $('span').text(data);
+                    /*$.ajax({
+                     data: oData,
+                     type: 'POST',
+                     url: '/your/url/here'
+                     });*/
+                }
+            });
+        });
+
+
+
+        lightbox.option({
+            'alwaysShowNavOnTouchDevices': true
+        });
+
+
+    </script>
+{% endblock %}
+
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
@@ -25,24 +60,19 @@
                             <h1 class="text-center">My Photos</h1>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" id="sortable">
+
                         {% for p in photoIdList %}
                             <div  class="col-xs-12 col-sm-6 col-lg-3">
                                 <div id="container">
-                                    <a href="/photoview/{{p.id}}" data-lightbox="photo"><img src="/photoview/{{p.id}}" width="250"></a>
-                                    <div class="left">
-                                        <a href="/photoview/{{p.id}}/download"><span class="glyphicon glyphicon-download-alt download" aria-hidden="true"></span></a>
-                                    </div>
-                                    <div class="middle">
-                                        <a href="/photoview/{{p.id}}"><span class="glyphicon glyphicon-eye-open enlarge" aria-hidden="true"></span></a>
-                                    </div>
-                                    <div class="right">
-                                        <a href="/photoview/{{p.id}}/delete"><span class="glyphicon glyphicon-trash delete" aria-hidden="true"></span></a>
+                                    <div id="item-{{loop.index}}">
+                                        <a href="/photoview/{{p.id}}" data-lightbox="photo" data-title="You can <a href='/photoview/{{p.id}}/download'>Download it</a> or <a href='/photoview/{{p.id}}/delete'>Delete it</a>"><img src="/photoview/{{p.id}}" width="250"></a>
                                     </div>
                                 </div>
                                 <br>
                             </div>
                         {% endfor %}
+
                     </div>
                 </div>
             </div>
