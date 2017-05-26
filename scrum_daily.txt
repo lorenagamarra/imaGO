@@ -143,7 +143,7 @@ WHERE I NEED HELP IS...
 *** May 24 Nedis ***
     For personal reasons he will be absent
 
-*** May 23 Lorena ***
+*** May 24 Lorena ***
 WHAT DID I DO / DID NOT DO SINCE LAST SCRUM:
         1. Still work with Facebook signin
 WILL DO IN THE NEXT 24 HOURS
@@ -161,7 +161,7 @@ WHERE I NEED HELP IS...
 *** May 25 Nedis ***
     For personal reasons he will be absent
 
-*** May 23 Lorena ***
+*** May 25 Lorena ***
 WHAT DID I DO / DID NOT DO SINCE LAST SCRUM:
         1. Added password_hash($pass1, CRYPT_BLOWFISH) and password_verify
 WILL DO IN THE NEXT 24 HOURS
@@ -169,6 +169,25 @@ WILL DO IN THE NEXT 24 HOURS
         2. Fix log problem
         3. Start Drop and Drag
         4. Start Album cover (flag)
+WHERE I NEED HELP IS...
+	1. Integration between Facebook login and our own login
+        2. How to associate Drop and Drag (photo position on screen) with DB?
+        3. DB, flag for cover album
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+*** May 26 Nedis + Weekend ***
+    For personal reasons he will be absent
+    1. Prepare Presentation for Monday
+
+*** May 26 Lorena + Weekend ***
+WHAT DID I DO / DID NOT DO SINCE LAST SCRUM:
+        1. Fixed log problem
+        2. Added lightbox on photos
+WILL DO IN THE NEXT 24 HOURS
+	1. Still work with Facebook signin
+        2. Drop and Drag
+        3. Album cover (flag)
+        4. Prepare Presentation for Monday
 WHERE I NEED HELP IS...
 	1. Integration between Facebook login and our own login
         2. How to associate Drop and Drag (photo position on screen) with DB?
