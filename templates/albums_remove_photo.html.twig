@@ -5,11 +5,10 @@
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="/profile"><b>{{ imagouser.name }} | Profile</b></a></li>
             <li><a href="/photos">Photos</a></li>
-            <li><a href="/photos/add">Add Photo</a></li>
-            <li><a href="/albums">Albums</a></li>
+            <li class="active"><a href="/albums">Albums</a></li>
             <li><a href="/albums/add">Add Album</a></li>
+            <li><a href="/profile"><b>{{ imagouser.name }}</b></a></li>
             <li><a href="/signout">Sign Out</a></li>
         </ul>
     </div>
@@ -33,9 +32,6 @@
                             <div  class="col-xs-12 col-sm-6 col-lg-3">
                                 <div id="container">
                                     <img src="/photoview/{{p.photoID}}" width="250" class="image">
-                                    <div class="middle">
-                                        <a href="/photoview/{{p.photoID}}"><span class="glyphicon glyphicon-eye-open enlarge" aria-hidden="true"></span></a>
-                                    </div>
                                     <div>
                                         <a href="/albums/{{album.id}}/removephoto/{{p.photoID}}"><span class="glyphicon glyphicon-minus rightbottom" aria-hidden="true"></span></a>
                                     </div>

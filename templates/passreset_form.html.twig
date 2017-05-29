@@ -28,12 +28,18 @@
                     </ul>
                 {% endif %}
                 
-                <p>Enter your new password below.</p>
-
+                <h4 class="text-center"><i class="ion-log-in"></i>Enter your new password below.</h4>
                 <form method="post">
-                    Password: <input type="password" name="pass1"><br>
-                    Password (repeated) <input type="password" name="pass2"><br>
-                    <input type="submit" value="Reset password">
+                    <div class="form-group has-feedback">
+                        <input class="form-control input-lg" type="password" name="pass1" placeholder="Password" autofocus>
+                        <span class="ion-key form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input class="form-control input-lg" type="password" name="pass2" placeholder="Password (repeated)" autofocus>
+                        <span class="ion-key form-control-feedback"></span>
+                    </div>
+                    <button type="submit" class="btn btn-block btn-primary">Request password reset</button>
+                    <br/><br/><br/><br/>
                 </form>
             </div>
         </div>

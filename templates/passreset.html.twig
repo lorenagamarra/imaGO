@@ -17,15 +17,18 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
-                <h1>Password reset</h1>
-                    {% if error %}
-                        <p><b>We couldn't find email you provided in our system.
+                <h3 class="text-center"><i class="ion-log-in"></i>Password reset</h3>
+                {% if error %}
+                    <p><b>We couldn't find email you provided in our system.
                             Try again or register a new account</b></p>
-                    {% endif %}
+                        {% endif %}
 
                 <form method="POST">
-                    Enter your email: <input type="email" name="email"><br>
-                    <input type="submit" value="Request password reset">
+                    <div class="form-group has-feedback" >
+                        <input class="form-control input-lg" type="email" id="email" name="email" placeholder="Email" autofocus value="{{v.email}}">
+                    </div>
+                    <button type="submit" class="btn btn-block btn-primary">Request password reset</button>
+                    <br/><br/><br/><br/>
                 </form>
             </div>
         </div>

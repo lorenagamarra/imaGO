@@ -1,15 +1,40 @@
 {% extends "master2.html.twig" %}
 
 {% block title %}imaGO - Photos List from Album{% endblock %}
-
+{% block headExtra %}
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#sortable").sortable();
+            $("#sortable").disableSelection();
+        });
+        $(document).ready(function () {
+            $('ul').sortable({
+                axis: 'y',
+                stop: function (event, ui) {
+                    var data = $(this).sortable('serialize');
+                    $('span').text(data);
+                    /*$.ajax({
+                     data: oData,
+                     type: 'POST',
+                     url: '/your/url/here'
+                     });*/
+                }
+            });
+        });
+        lightbox.option({
+            'alwaysShowNavOnTouchDevices': true
+        });
+    </script>
+{% endblock %}
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="/profile"><b>{{ imagouser.name }} | Profile</b></a></li>
             <li><a href="/photos">Photos</a></li>
-            <li><a href="/photos/add">Add Photo</a></li>
-            <li><a href="/albums">Albums</a></li>
+            <li class="active"><a href="/albums">Albums</a></li>
             <li><a href="/albums/add">Add Album</a></li>
+            <li><a href="/profile"><b>{{ imagouser.name }}</b></a></li>
             <li><a href="/signout">Sign Out</a></li>
         </ul>
     </div>
@@ -23,24 +48,23 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h1 class="text-center">Album: {{album.title}}</h1>
+                            <h4 class="text-center">Date: {{album.date}}</h4>
                         </div>
                     </div>
                     <br>
                     <h3>Your photo list:</h3>
                     <br>
-                    <div class="row">
+                    <div class="row" id="sortable">
                         {% for p in photoIdList %}
                             <div  class="col-xs-12 col-sm-6 col-lg-3">
                                 <div id="container">
-                                    <img src="/photoview/{{p.photoID}}" width="250" class="image">
-                                    <div class="middle">
-                                        <a href="/photoview/{{p.photoID}}"><span class="glyphicon glyphicon-eye-open enlarge" aria-hidden="true"></span></a>
+                                    <div id="item-{{loop.index}}">
+                                        <a href="/photoview/{{p.photoID}}" data-lightbox="photo" data-title="You can <a href='/photoview/{{p.photoID}}/download'>Download it</a> or <a href='/albums/{{album.id}}/removephoto/{{p.photoID}}'>Remove it</a> from this album."><img src="/photoview/{{p.photoID}}" width="250"></a>
                                     </div>
-                                </div>
-                                <br>    
+                                </div>  
                             </div>
                         {% endfor %}
-                        
+
                     </div>
                 </div>
             </div>

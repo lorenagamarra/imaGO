@@ -3,7 +3,6 @@
 {% block title %}imaGO - Photos{% endblock %}
 
 {% block headExtra %}
-
     <script src="//code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
     <script>
@@ -11,7 +10,6 @@
             $("#sortable").sortable();
             $("#sortable").disableSelection();
         });
-
         $(document).ready(function () {
             $('ul').sortable({
                 axis: 'y',
@@ -26,25 +24,19 @@
                 }
             });
         });
-
-
-
         lightbox.option({
             'alwaysShowNavOnTouchDevices': true
         });
-
-
     </script>
 {% endblock %}
 
 {% block navbarSign %}
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="/profile"><b>{{ imagouser.name }} | Profile</b></a></li>
-            <li><a href="/photos">Photos</a></li>
+            <li class="active"><a href="/photos">Photos</a></li>
             <li><a href="/photos/add">Add Photo</a></li>
             <li><a href="/albums">Albums</a></li>
-            <li><a href="/albums/add">Add Album</a></li>
+            <li><a href="/profile"><b>{{ imagouser.name }}</b></a></li>
             <li><a href="/signout">Sign Out</a></li>
         </ul>
     </div>
@@ -61,7 +53,6 @@
                         </div>
                     </div>
                     <div class="row" id="sortable">
-
                         {% for p in photoIdList %}
                             <div  class="col-xs-12 col-sm-6 col-lg-3">
                                 <div id="container">
