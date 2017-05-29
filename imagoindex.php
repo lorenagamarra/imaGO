@@ -536,9 +536,10 @@ $app->get('/albums', function() use ($app) {
     $userId = $_SESSION['imagouser']['id'];
     $albumList = DB::query("SELECT * FROM albums WHERE userID=%i ORDER BY id DESC", $userId);
     $firstPhoto = DB::query("SELECT * FROM photosonalbums WHERE userID=%i", $userId);
-    $photosOnAlbumMaxId = DB::query("SELECT MAX(photoID) AS photoID FROM photosonalbums WHERE userID=%i and albumID=%i", $userId, $albumID);
-    print_r($photosOnAlbumMaxId);
-    $app->render('albums.html.twig', array('albumList' => $albumList, 'firstPhoto' => $firstPhoto, photosOnAlbumMaxId => $photosOnAlbumMaxId));
+    //$photosOnAlbumMaxId = DB::query("SELECT MAX(photoID) FROM photosonalbums WHERE userID=%i and albumID=%i", $userId, $albumID);
+    //print_r($photosOnAlbumMaxId);
+    //$app->render('albums.html.twig', array('albumList' => $albumList, 'firstPhoto' => $firstPhoto, photosOnAlbumMaxId => $photosOnAlbumMaxId));
+    $app->render('albums.html.twig', array('albumList' => $albumList, 'firstPhoto' => $firstPhoto));
 });
 
 
